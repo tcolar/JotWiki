@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+<head>
+    <title>JOTWIKI: Setup</title>
+    <link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+    <script type="text/javascript" src="template.js"></script>
+    <link rel="stylesheet" type="text/css" href='template.css'/>
+    <style type="text/css">
+        <!--
+        .question{position:absolute;top:200px;left:200px;background-color: #eeeeff;color:#000000;z-index: 99;border: 3px;border-color: #0000ff;border-style: ridge;min-width: 300px;min-height: 100px;padding: 5px;display:none}
+        -->
+        </style></head>
+
+<body height="100%" width="100%">
+
+<div class="content">
+    <div class="box">
+        Setup Action
+    </div>
+    <div class="box">
+        <div class="page">
+            <table width="100%" height="100%">
+                <tr><td align="center" valign="middle">
+                        <jot:var value="generatedForm"/>
+            </td></tr></table>
+        </div>
+    </div>
+</div>
+<div class="sidebar">
+    <div class="sitenav_item">
+    <div class="box">
+        <div class="sitenav_title">
+            Setup Menu
+        </div>
+        <div class="sitenav_content">
+            <jot:if eval="SetupMessage">
+                <font color="#ff0000"><b><jot:var value="SetupMessage"/></b></font>
+            </jot:if>
+            <hr>
+            <jot:if eval="showSetup">
+                <a href="setup.do">Global Settings</a>
+                <hr>
+            </jot:if>
+            <jot:if eval="showNamespaces">
+                <b>Namespaces:</b>&nbsp;<a class='form_help_link' href='#' onClick="toggle('ns_help');"><img src='images/help.png' border='0'></a><br>
+                <div id='ns_help' class='form_help'>
+                    Namespaces allow you to run mutliple 'sites' within 1 jotwiki.<br><br>
+                    <b>You should edit at least the 'default' namespace to set your main site option such as title, URL etc...</b>
+                    <br><br>
+                    You will want to create other namespaces if:<br>
+                    - You want to have multiple section of the sites with different looks and/or users.<br>
+                    - You want to run multiple sites with different host names in 1 instance of jotwiki.<br><br>
+                    <b>Unless you want to do one of those two things, you should just have the "default" namespace.</b><br><br>
+                    The default namespace, is the one accessed when you simply go to http://hostname/ or http://hostname/default/<br><br>
+                    If you create a new namespace say "site2", you would access it at http://hostname/site2/<br>
+                    You could then map that (http://hostname/site2/) to a hostname such as http://www.site2.com/ using mod_proxy.</br>
+                    <br><br>See the <a href="http://www.jotwiki.net" target="_blank">jotwiki site</a> for more informations on doing this.
+                </div>
+                <a href="editNamespace.do?new=1">Create new</a>
+                <form action="editNamespace.do" method="POST">
+                    <select name="ns">
+                        <jot:loop over="namespaces" as="ns">
+                            <option value="<jot:var value="ns"/>"><jot:var value="ns"/>
+                        </jot:loop>
+                    </select><br/>
+                    <input type="submit" class="button" value="Edit">
+                </form>
+                <hr/>
+            </jot:if>
+            <jot:if eval="showProfiles">
+                <b>Profiles:</b>
+                <a class='form_help_link' href='#' onClick="toggle('profile_help');"><img src='images/help.png' border='0'></a><br>
+                <div id='profile_help' class='form_help'>
+                    Profiles define a set of permissions which can then be assigned to a user.<br>
+                </div>
+                <a href="editProfile.do?new=1">Create new</a>
+                <form action="editProfile.do" id="delete_profile" method="POST">
+                    <select name="profile">
+                        <jot:loop over="profiles" as="profile">
+                            <option value="<jot:var value="profile"/>"><jot:var value="profile"/>
+                        </jot:loop>
+                    </select><br/>
+                    <input type="button" class="button" onClick="document.getElementById('delete_profile_q').style.display='block';" value="Delete"/>
+                    <input type="hidden" name="actionType" id="actionType" value="edit"/>
+                    <input type="submit" name="edit" class="button" value="Edit">
+                </form>
+                <hr/>
+            </jot:if>
+            <jot:if eval="showUsers">
+                <b>Users:</b>
+                <a class='form_help_link' href='#' onClick="toggle('user_help');"><img src='images/help.png' border='0'></a><br>
+                <div id='user_help' class='form_help'>
+                    Create/Edit users.<br>
+                </div>
+                <a href="editUser.do?new=1">Create new</a>
+                <form action="editUser.do" id="delete_user" method="POST">
+                    <select name="user">
+                        <jot:loop over="users" as="user">
+                            <option value="<jot:var value="user"/>"><jot:var value="user"/>
+                        </jot:loop>
+                    </select><br/>
+                    <input type="button" class="button" onClick="document.getElementById('delete_user_q').style.display='block';" value="Delete"/>
+                    <input type="hidden" name="actionType" id="actionType" value="edit"/>
+                    <input type="submit" name="edit" class="button" value="Edit">
+                </form>
+                <hr/>
+            </jot:if>
+            <jot:if eval="showNamespaces">
+                <a href="adminFm.do" target="_blank">Manage Files</a>
+                <hr>
+            </jot:if>
+            <a href="last.do">Exit SETUP</a>
+            <hr>
+            <img width=1" height="1" src="http://www.colar.net/pixels/jotwiki.gif">
+        </div>
+    </div>
+    
+    <div class="question" id="delete_user_q">
+        <center>
+            <form>    
+            Are you sure you want to delete that user ?<br/><br/>
+            <input type="button" class="button" onClick="document.getElementById('delete_user_q').style.display='none';" value="No"/>
+            &nbsp;
+            <input type="button" class="button" onClick="document.getElementById('delete_user_q').style.display='none';document.getElementById('delete_user').actionType.value='delete';document.getElementById('delete_user').submit();" value="Yes"/>
+        </center>
+        </form>
+    </div>
+    
+    <div class="question" id="delete_profile_q">
+    <center>
+        <form>    
+        Are you sure you want to delete that profile ?<br/><br/>
+        <input type="button" class="button" onClick="document.getElementById('delete_profile_q').style.display='none';" value="No"/>
+        &nbsp;
+        <input type="button" class="button" onClick="document.getElementById('delete_profile_q').style.display='none';document.getElementById('delete_profile').actionType.value='delete';document.getElementById('delete_profile').submit();" value="Yes"/>
+    </center>
+    </form>
+</div>
+
+</body>
+</html>

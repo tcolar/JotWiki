@@ -1,0 +1,82 @@
+<project name="jotwiki" default="war" basedir=".">
+<description>build file for B2C</description>
+
+	<path id="classpath">
+	      <fileset dir="web/WEB-INF/lib">
+	        <include name="**/*.jar"/>
+	      </fileset>
+    	  <filelist dir="lib">
+			<file name="servlet-api.jar"/>
+		  </filelist>
+	</path>
+	
+	<!-- copy latest jar from jot project, or you could just copy it manually into your web-inf/lib-->
+	<target name="copyjar">
+		<copy file="../javaontracks/dist/javaOnTracks.jar" todir="web/WEB-INF/lib"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="web/WEB-INF/classes"/>
+		<mkdir dir="web/WEB-INF/classes"/>
+	</target>
+
+	<target name="compile" depends="clean">
+            <echo message="Starting custom compile ... "/>
+		<javac srcdir="src" target="1.4" source="1.4" destdir="web/WEB-INF/classes" debug="true" debuglevel="lines,vars,source" classpathref="classpath"/>
+		<javac srcdir="installer" target="1.4" source="1.4" destdir="installer" debug="true" debuglevel="lines,vars,source" classpathref="classpath"/>
+	</target>
+
+	<target name="tag">
+    <echo message="tagging"/>
+		<!-- compile the Version class before calling it -->
+                <delete file="bin/net/jotwiki/Version.class"/>
+		<javac srcdir="src" destdir="bin" classpathref="classpath" target="1.4" source="1.4">
+		 <include name="net/jotwiki/Version.java"/>
+		</javac>
+		<!--calling it -->
+		<java classname="net.jotwiki.Version" classpathref="classpath">
+			<classpath location="bin"/>
+			<arg value="src/net/jotwiki/Version.java"/>
+		</java>
+	</target>
+	
+	<target name="war" depends="copyjar, tag, compile">
+		<!-- creating web module archive -->
+		<delete file="jotwiki.war"/>
+		<war destfile="jotwiki.war" webxml="web/WEB-INF/web.xml" >
+		<fileset dir="web/"/>
+		</war>
+	</target>
+	
+        <target name="dist" depends="war" description="build the release package">
+            <delete dir="dist"/>
+            <mkdir dir="dist"/>
+            <mkdir dir="dist/jotwiki_installer"/>
+            <copy todir="dist/jotwiki_installer">
+                <fileset dir="installer" includes="**"/>
+                <fileset file="jotwiki.war"/>
+                <fileset file="VERSION.txt"/>
+                <!--<fileset dir="." includes="javadoc/**"/>-->
+                <fileset dir="." includes="templates/**"/>
+            </copy>
+            <copy todir="dist/jotwiki_installer" file="jotwiki.war"/>
+            <zip destfile="dist/jotwiki.zip">
+                <fileset dir="dist" includes="jotwiki_installer/**"/>
+            </zip>        
+        </target>
+        
+	<target name="javadoc" depends="war">
+			<mkdir dir="javadoc"/>
+			<javadoc sourcepath="src" destdir="javadoc" packagenames="*" verbose="true">
+			<classpath>
+                         <filelist dir="web/WEB-INF/lib">
+				<file name="javaOnTracks.jar"/>
+			</filelist>   
+                         <filelist dir="lib">
+				<file name="servlet-api.jar"/>
+			</filelist>   
+                            </classpath>
+                            </javadoc>
+	</target>	
+</project>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+"http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+    
+    <filter>
+        <filter-name>JOTWikiFilter</filter-name>
+        <filter-class>net.jotwiki.JOTWikiFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <!--  handles url's like http://server/jotwiki/home  (a.k.a vanity url's) -->
+        <filter-name>JOTWikiFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <!--  VERY IMPORTANT ! -->
+        <dispatcher>FORWARD</dispatcher>	
+    </filter-mapping>
+    
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+    
+    <!-- This is required for Proxying to work (jetty)!!-->
+    <context-param>
+        <param-name>org.mortbay.jetty.servlet.SessionPath</param-name>
+        <param-value>/</param-value>
+    </context-param> 
+</web-app>

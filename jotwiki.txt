@@ -1,0 +1,77 @@
+
+===== Requirement =====
+Jotwiki.war is a standard lightweight java web application, and the only requirement is a java application server such as jetty, tomcat or jboss.
+
+====== Installation =====
+Download the latest jotwiki.jar from http://jot.colar.net/
+
+Once you have jotwiki.war, continue on:
+
+
+==== Data Root folder ====
+By default jotwiki data will go to /opt/jotwiki/default/ (c:\jotwiki\default on windows).
+**If that's fine with you and you are only going to run one copy of jotwiki, you don't need to change anything and can skip "Custom root folder"**
+
+=== Custom root folder (Optinonal)===
+Otherwise here is what to do:
+  * Unzip jotwiki.war (a war is just a zip file), you can use winzip or 7zip, or just run on the command line ''jar xvf jotwiki.war'' (in an empty folder).
+  * Once unzip go into the jotconf folder and open jot.conf in a text editor.
+  * Change the values of wiki.datafolder.windows / wiki.datafolder.others to the folder you want to use to store the wiki's data.
+  * Once done, Zip the jar back together. ex: ''jar czvf jotwiki.war *''
+
+FIXME: Explain issues with debian / java policies.
+
+WARNING: You will have to make that change every time you upgrade jotwiki (new war)!
+Otherwise jotwiki will use the default folder and won't find your existing content.
+
+=== Creating the root folder and preparing the setup ===
+
+  * You should create the data folder (ex: /opt/jotwiki/default/)manually and set the permissions correctly so your java server (ex: tomcat) can read/write to it.
+For example:
+<code>
+sudo mkdir /opt/jotwiki/default/
+sudo chown www:data:www:data /opt/jotwiki/default/
+#sudo chown tomcat:tomcat /opt/jotwiki/default/
+</code>
+
+  * You also need to create an empty file called **runsetup.txt** (lowercase) in the data folder.
+This is how you tell jotwiki to present you with the setup page (ex: ''touch /opt/jotwiki/default/runsetup.txt'')
+
+TIP: Once you complete setup, the file runsetup.txt will be removed, and the initial setup screen should never show again unless you rec-reate manually runsetup.txt.
+
+==== Name (Optional)=====
+You might want to rename the war.
+If you wan't the wiki to be located somewhere different than http://yoursite/jotwiki/, you could rename the war to a new name. (or adjust the context path in you java server).
+
+Another reason is if you want to run multiple different wiki instances ("sites"), then you could have two copies with different names (ex: jotwiki-site1.war, jotwiki-site2.war).
+
+==== Application server ====
+jotwiki is a java webapplication and needs to be deployed to a java application server such as jetty, tomcat or jboss.
+
+If you don't have one installed yet, see [[Installing jetty for jotwiki]]
+FIXME: make the jetty installation page
+
+==== Deploy the war file ====
+You can now deploy the web application (jotwiki.war) to your application server.
+On most application servers such as tomcat or jetty, it's as simple as copying jotwiki.jar into the webapps directory.
+Ex: ''sudo cp jotwiki.jar /opt/jetty/webapps/''
+
+TIP: Once the application is deployed and the server is running, you shoudl be to able check for errors in /opt/jotwiki/default/logs/
+Hopefully there should not be any errors
+
+======= Initial Setup =======
+
+Go to http://yourserver:8080/jotwiki/ this should present you with the setup page (as lonmg as you created the runsetup.txt file as explained earlier).
+
+TIP: depending of which application server you are using and configuration, the port might be other than 8080.
+However 8080 is the "standard" java server port
+Also if you customized the context or war name 'jotwiki', you will have to replace that in the URL as well.
+
+Complete the setup page, and submit it.
+
+Once setup is complete you should be able to go to http://yourserver:8080/jotwiki/ and be able to start using the wiki.
+
+===== Using a proxy / Apache in front of the application server =====
+
+FIXME: TBD
+

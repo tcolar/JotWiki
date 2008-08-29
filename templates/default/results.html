@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <title>Search Results</title>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href='jotwiki.css''/>
+              <link rel="stylesheet" type="text/css" href='template.css'/>
+        <script type="text/javascript" src="template.js"></script>
+    </head>
+    
+    <body>
+        <!-- start header block -->
+        <div class="box" style="margin-bottom:15px;">
+            <div id="header">
+                <div id="headerline1">
+                    <div id="header_title">      
+                        <a class="title" href=''  name="top">Search Results</a>
+                    </div>
+                    <div class="pagename">
+                        [[&nbsp;<a href="" >Search Results</a>&nbsp;]]
+                    </div>
+                </div>
+                <div class="box" style="clear:both">
+                    <div id="header_bar">
+                        <div class="bar_left" id="bar_topleft">
+                            <span class="tagline"></span>
+                            &nbsp;<a href="http://wiki.colar.net/">&copy;Thibaut Colar</a>
+                        </div>
+                        <div class="bar_right" id="bar_topright">
+                            <form action="search.do" accept-charset="utf-8" class="search" >
+                                <div class="no"><input type="text" name="text" class="edit" value=""/>&nbsp;<input type="submit" value="Search" class="button" title="Search" /></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end header block -->
+
+    
+  <!-- start content block -->
+        <div class="content">
+            <div class="box">
+                
+                <!-- start wikipage block -->
+                <div class="box">
+                    <div class="page">
+                        <!-- search results -->
+                        <h1> Search results for "<jot:var value="query"/>"</h1>
+                        <b>Found <jot:var value="getNbResults()"/> matches.</b><br/><br/>
+                        <jot:if eval=" ! results">
+                            Sorry, no matches found for this query.<br><br>
+                        </jot:if>
+                        <jot:if eval="results">
+                            <b>Pages:</b> <jot:var value="getPageLinks()"/><br/><br/>
+                            <hr/>
+                            <jot:loop over="results" as="result">
+                                [[<jot:var value="getLink(result)"/>]] <jot:var value="getStars(result)"/><br>
+                                <jot:var value="getAbstract(result)"/>  
+                                <hr/>
+                            </jot:loop>
+                        </jot:if>
+                    </div>
+                </div>
+                <!-- end wikipage block -->
+
+            </div>
+        </div>
+        <!-- end content block -->
+<!-- start sidebar -->
+        <div class="sidebar">
+            
+            <!-- start site navigation box -->
+            <div class="sitenav_item">
+                <div class="box">
+                    <div class="sitenav_title">
+                        Menu
+                        <jot:if eval="loggedUser">
+                            <a href="<jot:var value="editSidebarLink"/>" class="iconLink"><img src="images/buttons/edit_small.png" border="0"/></a>
+                        </jot:if>
+                    </div>
+                    <div class="sitenav_content">
+                        <img class="imgCenter" src="images/caro2.jpg">	
+                             <jot:var value="getPageContent('sidebar')"/>
+                    </div>
+                </div>
+            </div>
+            <!-- end site navigation box -->
+
+   <!-- start credit icons /version -->
+            <div class="version">
+                <!-- JOTWiki version: <jot:var value="version"/> -->
+                <a href="http://www.jotwiki.net/"><img src="images/jotwiki.png" border=0 width=100 height=20/></a><br>
+                <a href="http://www.javaontracks.net/"><img src="images/jot.png')" border=0 width=100 height=20/></a><br>
+            </div>
+            <!-- end version -->
+
+
+        </div>
+        <!-- end sidebar -->
+        
+    </body>
+</html>

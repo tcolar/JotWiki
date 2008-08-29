@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <title>JOTWIKI: Syntax</title>
+        <link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+        <link rel="stylesheet" type="text/css" href='template.css'/>
+    </head>
+    <body class="syntaxPageBody">
+        <br>
+        <h2>JOTWiki Syntax:</h2>
+        <br>
+        <b>Text Formatting:</b>
+        <table border=1>
+            <tr><th>Syntax</th><th>Description</th><th>Example</th></tr>
+            <tr><td>** foo **</td><td>Bold text</td><td><b>foo</b></td></tr>
+            <tr><td>// foo //</td><td> Italic text</td><td><i>foo</i></td></tr>
+            <tr><td>__ foo __</td><td> Underscored text </td><td><u>foo</u></td></tr>
+            <tr><td>&lt;del&gt; foo &lt;/del&gt;</td><td> Deleted (striked) text </td><td><del>foo</del></td></tr>
+            <tr><td>&lt;sub&gt; foo &lt;/sub&gt;</td><td> Subscript text </td><td><sub>foo</sub></td></tr>
+            <tr><td>&lt;html&gt; &amp;gt; &lt;/html&gt;</td><td>Html Code (Content won't be parsed)</td><td>&amp;gt;</td></tr>
+        </table>
+        <br>
+        <b>Headings / Separators:</b>
+        <table border=1>
+            <tr><td>====== foo ======</td><td> Largest Heading (H1)</td><td><h1>foo</h1></td></tr>
+            <tr><td>== foo == </td><td>Smallest Heading (H6)</td><td><h6>foo</h6></td></tr>
+            <tr><td>------ </td><td>Separator (&lt;HR&gt;) 3 or more dashes</td><td><hr/></td></tr>
+            <tr><td><pre>  *foo<br>  *bar</pre></td><td>Bullet list item(2 spaces followed by *)</td><td><ul><li>foo</li><li>bar</li></ul></td></tr>
+            <tr><td><pre>  -foo<br>  -bar</pre></td><td>Bullet list item(2 spaces followed by -)</td><td><ul><li>foo</li><li>bar</li></ul></td></tr>
+        </table>
+        <br>
+        <b>Images / Files</b>(Images will display inline, Files will be linked to).
+        <table border=1>
+            <tr><td>{{help.jpg}}</td><td>Image</td><td width="100"><image src="images/help.png"></td></tr>
+            <tr><td>{{help.png }}</td><td>Image aligned left</td><td><image src="images/help.png" align="left"></td></tr>
+            <tr><td>{{ help.gif}}</td><td>Image aligned right</td><td><image src="images/help.png" align="right"></td></tr>
+            <tr><td>{{ help.bmp }}</td><td>Image centered</td><td align="center"><image src="images/help.png" align="center"></td></tr>
+            <tr><td>{{myfile.xls}}</td><td>Attached file(link)</td><td align="center"><a href="">myfile.xls</a></td></tr>
+        </table>
+        <br>
+        <b>Tables</b>
+        <table border=1>
+            <tr><td>^head1^head2^<br>|cel1| cel2|<br>|cel3 | cel4 |<br></td><td>Table<br>left/right/centered<br>Terminate by empty line</td><td><table border=1><tr><th width="150">head1</th><th width="150">head2</th></tr><tr><td>cel1</td><td align="left">cel2</td></tr><tr><td align="right">cel3</td><td align="center">cel4</td></tr></table></td></tr>
+        </table>
+        <br>
+        <b>Links</b>
+        <table border=1>
+            <tr><td>[[http://www.google.com]]<br>[[http://www.google.com | Google]]</td><td>Link<br>Link with title</td><td><a href="http://www.google.com">http://www.google.com</a><br><a href="http://www.google.com">Google</a></td></tr>
+        </table>
+        <br>
+        <b>Code (In a code box, not parsed)</b>
+        <table border=1>
+            <tr><td>''sudo ls -lai''</td><td>Single line (inline) code<br>(2 single quotes)</td><td><span class="code">sudo ls -lai</span></td></tr>
+            <tr><td>&lt;code&gt;<br>int i=2;<br>i+=1;<br>&lt;/code&gt;</td><td>Large code block</td><td><div class="code">int i=2;<br>i=i+1;</div></td></tr>
+            <tr><td>&lt;code | Addition Example&gt;<br>int i=2;<br>i+=1;<br>&lt;/code&gt;</td><td>Large code block with title</td><td><div class="code"><div class="code_title">Addition Example</div>int i=2;<br>i=i+1;</div></td></tr>
+        </table><br/>
+        <b>Smileys:</b><br/>
+        :-)&nbsp;&nbsp; ;-)&nbsp;&nbsp; :-D &nbsp;&nbsp;:-P &nbsp;&nbsp;:-(<br>
+        <image src="images/smileys/smile.gif">&nbsp;&nbsp;
+        <image src="images/smileys/wink.gif">&nbsp;&nbsp;
+        <image src="images/smileys/lol.gif">&nbsp;&nbsp;
+        <image src="images/smileys/tongue.gif">&nbsp;&nbsp;
+        <image src="images/smileys/frown.gif">&nbsp;&nbsp;<br><br>
+        <b>Content Boxes (with icon)</b><br/>
+        Start with KEYWORD:<br>ends with empty line.<br/>
+        <table border="1">
+            <tr><td>FIXME:<br>Example Fixme box<br>With two lines<br><br></td><td><div class='fixme'>Example Fixme box<br>With two lines</div></td></tr>
+            <tr><td>WARNING:<br>Example Warning box<br><br></td><td><div class='warning'>Example Warning box</div></td></tr>
+            <tr><td>TIP:<br>Example Tip box<br><br></td><td><div class='tip'>Example Tip box</div></td></tr>
+            <tr><td>NOTE:<br>Example Note box<br><br></td><td><div class='note'>Example Note box</div></td></tr>
+            <tr><td>DELETEME:<br>Example DeleteMe box<br><br></td><td><div class='deleteme'>Example DeleteMe box</div></td></tr>
+        </table>
+        <br>
+        <b>Special tags</b>
+        <table border=1>
+            <tr><td>@@MANTIS-ROOT@@</td><td>Link to mantis site</td><td><a class="mantis" href="">Mantis</a></td></tr>
+            <tr><td>@@MANTIS-ID:25@@</td><td>Link to mantis issue #25</td><td><a  class="mantis" href="">Bug 25</a></td></tr>
+            <tr><td>@@MANTIS-CAT:project1@@</td><td>Link to mantis category 'project1'</td><td><a  class="mantis" href="">Category 'project1'</a></td></tr>
+        </table>
+        <br>
+        <br>    
+    </body>
+</html>

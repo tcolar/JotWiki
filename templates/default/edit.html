@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+ lang="en" dir="ltr">
+<head>
+  <title>JOTWIKI: Edit Page</title>
+<style>
+.form_error{background-color:#ffdddd;border-color:#ff0000;color:#ff0000}
+</style>
+<link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+<link rel="stylesheet" type="text/css" href='template.css'/>
+<script type="text/javascript" src="template.js"></script>
+<script type="text/javascript" src="edit.js"></script>
+<script type="text/javascript">setTimers(<jot:var value="lockLength"/>);</script>
+</head>
+
+<body class="editPageBody">
+ <form jotclass="net.jotwiki.forms.EditForm" action="submitedit.do" method="post" id="editForm">
+ <center>
+ <table>
+<tr>
+<td align="left">
+   Editing "<jot:var value="pageName"/>"
+</td>
+<td align="right">
+   <a href="syntax.html" target="_blank">Syntax Help</a>
+ </td>
+ </tr>
+ <tr>
+ <td  align="left" colspan="2">
+ <a class="tooltip"  href='#' onClick="updateText('**','**','Bold Text');"><img border=0 src="images/editor/bold.png"><span>Bold</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('//','//','Italic Text');"><img border=0 src="images/editor/italic.png"><span>Italic</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('__','__','Underlined Text');"><img border=0 src="images/editor/underlined.png"><span>Underlined</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('<del>','</del>','Deleted Text');"><img border=0 src="images/editor/striked.png"><span>Striked-through</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('<sub>','</sub>','Subscript Text');"><img border=0 src="images/editor/subscript.png"><span>Subscript</span></a>
+ &nbsp;&nbsp;
+ <a class="tooltip"  href='#' onClick="updateText('\n======','======','Header');"><img border=0 src="images/editor/h1.png"><span>Largest Header(H1)</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n=====','=====','Header');"><img border=0 src="images/editor/h2.png"><span>Header(H2)</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n====','====','Header');"><img border=0 src="images/editor/h3.png"><span>Header(H3)</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n===','===','Header');"><img border=0 src="images/editor/h4.png"><span>Header(H4)</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n==','==','Header');"><img border=0 src="images/editor/h5.png"><span>Smallest Header(H5)</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n----\n','','');"><img border=0 src="images/editor/hr.png"><span>Separator(HR)</span></a>
+&nbsp;&nbsp;
+ <a class="tooltip" href='#' onClick="updateText('[[',']]','http://');"><img border=0 src="images/editor/link.png"><span>Insert a link</span></a>
+ <!-- tbd -->
+ <a class="tooltip" href='#' onClick="openFileManager();"><img  border=0 src="images/editor/image.png"><span>Insert an image<br>or attach a file.</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n  - ','\n','List Item');"><img border=0 src="images/editor/list.png"><span>List item</span></a>
+<span class="dropdownHolder">
+ <a class="tooltip"  href='#' onClick="toggle('smileys');"><img border=0 src="images/editor/smileys.png"><span>Smiley's</span></a>
+ <span id='smileys' class='dropdown' style="width:40px">
+ <a class="iconLink" href="#" onClick="updateText(':-)','','');"><img border=0 src="images/smileys/smile.gif"/>&nbsp;:-)</a><br>
+ <a class="iconLink" href="#" onClick="updateText(';-)','','');"><img border=0 src="images/smileys/wink.gif"/>&nbsp;;-)</a><br>
+ <a class="iconLink" href="#" onClick="updateText(':-D','','');"><img border=0 src="images/smileys/lol.gif"/>&nbsp;:-D</a><br>
+ <a class="iconLink" href="#" onClick="updateText(':-P','','');"><img border=0 src="images/smileys/tongue.gif"/>&nbsp;:-P</a><br>
+ <a class="iconLink" href="#" onClick="updateText(':-(','','');"><img border=0 src="images/smileys/frown.gif"/>&nbsp;:-(</a><br>
+ </span>
+</span>
+ <a class="tooltip"   href='#' onClick="updateText('\n^head1^head2^\n|cel1| cel2|\n\n','','');"><img border=0 src="images/editor/table.png"><span>Table</span></a>
+&nbsp;&nbsp;
+ <a class="tooltip"   href='#' onClick="updateText('\'\'','\'\'','Some Code');"><img border=0 src="images/editor/code.png"><span>Code: 1 liner</span></a>
+ <a class="tooltip"   href='#' onClick="updateText('\n<code | Code Example>\n','\n</code>\n','Some Code');"><img border=0 src="images/editor/code_block.png"><span>Code block<br>with title.</span></a>
+ <a class="tooltip"  href='#' onClick="updateText('\n<html>\n','\n</html>\n','HTML Block');"><img border=0 src="images/editor/html.png"><span>HTML block</span></a>
+<span class="dropdownHolder">
+<a class="tooltip"  href='#'  onClick="toggle('boxes');"><img border=0 src="images/editor/boxes.png"><span>Content Boxes<br>Tip, Warning etc...</span></a>
+<span id='boxes' class='dropdown'  style="width:120px">
+<table>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\nTIP: ','\n\n','Some Tip Info');"><img border=0 src="images/tip.gif"/></a></td><td>Tip</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\nWARNING: ','\n\n','Some Warning Info');"><img border=0 src="images/warning.gif"/></a></td><td>Warning</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\nNOTE: ','\n\n','Some Note Info');"><img border=0 src="images/note.jpg"/></a></td><td>Note</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\nFIXME: ','\n\n','Some Fixme Info');"><img border=0 src="images/fixme.gif"/></a></td><td>Fixme</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\nDELETEME: ','\n\n','Some Delete Info');"><img border=0 src="images/delete.gif"/></a></td><td>DeleteMe</td></tr>
+</table>
+</span>
+</span>
+<jot:if eval="mantisEnabled">
+&nbsp;&nbsp;
+<span class="dropdownHolder">
+<a class="tooltip"  href='#'  onClick="toggle('mantis');"><img border=0 src="images/editor/mantis.png"><span>Mantis support<br>Link to Bugs, Categories...</span></a>
+<span id='mantis' class='dropdown'  style="width:120px">
+<table>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\n@@MANTIS-ID:','@@','xx');">Bug/Task ID Link</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\n@@MANTIS-CAT:','@@','categoryName');">Category Link</td></tr>
+<tr><td><a class="iconLink" href="#" onClick="updateText('\n@@MANTIS-ROOT@@','','');">HomePage Link</td></tr>
+</table>
+</span>
+</span>
+</jot:if>
+ </td>
+ <tr>
+ <td colspan="2">
+  <input name="pageName" type="hidden">
+  <input name="namespace" type="hidden">
+  <input name="pageMD5" type="hidden" value="N/A">
+  <textarea  name="text" class="edit" id='textEditor' cols="115" rows="25" wrap=soft>
+  </textarea>
+ </td>
+ </tr>
+ <tr>
+ <td colspan="2" align="center">
+  <!-- 
+  <input class="button" type="submit" value="Preview"/>
+  <input class="button" type="submit" value="Save & Edit"/>
+  -->
+  <input class="button" type="button" value="Cancel" onClick="javascript:confirmCancel('editForm','<jot:var value="pageName"/>','<jot:var value="nameSpace"/>');"/>&nbsp;
+  <input class="button" type="submit" value="Save Page"/>
+  </td>
+  </tr>
+ </table>
+ </center>
+ <br>
+ </form>
+ </body>
+</html>

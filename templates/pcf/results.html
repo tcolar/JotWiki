@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <title>Search Results</title>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+        <link rel="stylesheet" type="text/css" href='template.css'/>
+        <script type="text/javascript" src="template.js"></script>
+    </head>
+    
+    <body>
+        <!-- start header block -->
+        <div class="box" style="margin-bottom:15px;">
+            <div id="header">
+                <div id="headerline1">
+                    <div id="header_title">      
+                        <a class="title">Search Results</a>
+                    </div>
+                    <div class="pagename">
+                        [[&nbsp;<a href="" >Search Results</a>&nbsp;]]
+                    </div>
+                </div>
+                <div class="box" style="clear:both">
+                    <div id="header_bar">
+                        <div class="bar_left" id="bar_topleft">
+                            <!-- start site navigation box -->
+                            <div id="menuButton">
+                                <b>Menu:</b>
+                                <jot:var value="getPageContent('sidebar')"/>
+                            </div>
+                            <jot:if eval="loggedUser">
+                                <a href='<jot:var value="editSidebarLink"/>' class="iconLink"><img src="images/buttons/edit_small.png" border="0"/></a>
+                            </jot:if>
+                        </div>
+                        <div class="bar_right" id="bar_topright">
+                            <form action="search.do" accept-charset="utf-8" class="search">
+                                <div class="no"><input type="text" name="text" class="edit" value=""/>&nbsp;<input type="submit" value="Search" class="button" title="Search" /></div>
+                            </form>
+                        </div>
+                        <!-- end site navigation box -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- end header block -->
+
+    
+  <!-- start content block -->
+        <div class="content" style="width:100%">
+            <div class="box">
+                
+                <!-- start wikipage block -->
+                <div class="box">
+                    <div class="page">
+                        <!-- search results -->
+                        <h1> Search results for "<jot:var value="query"/>"</h1>
+                        <b>Found <jot:var value="getNbResults()"/> matches.</b><br/>
+                        <jot:if eval=" ! results">
+                            Sorry, no matches found for this query.<br><br>
+                        </jot:if>
+                        <jot:if eval="results">
+                            <b>Pages:</b> <jot:var value="getPageLinks()"/><br/><br/>
+                            <hr/>
+                            <jot:loop over="results" as="result">
+                                [[<jot:var value="getLink(result)"/>]] <jot:var value="getStars(result)"/><br>
+                                <jot:var value="getAbstract(result)"/>  
+                                <hr/>
+                            </jot:loop>
+                        </jot:if>
+                    </div>
+                </div>
+                <!-- end wikipage block -->
+
+            </div>
+        </div>
+        
+    </body>
+</html>
