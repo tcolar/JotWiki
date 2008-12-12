@@ -1,9 +1,6 @@
 <project name="jotwiki" default="war" basedir=".">
 <description>build file for B2C</description>
 
-<import file="nbproject/build-impl.xml"/>
-<import file="nbproject/profiler-build-impl.xml"/>
-
 	<path id="classpath">
 	      <fileset dir="web/WEB-INF/lib">
 	        <include name="**/*.jar"/>
