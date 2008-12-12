@@ -12,7 +12,7 @@ import java.util.Hashtable;
 import javax.servlet.http.HttpSession;
 
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 import net.jot.web.JOTFlowRequest;
 import net.jot.web.forms.JOTDBForm;
@@ -37,18 +37,18 @@ import net.jotwiki.db.WikiUser;
 public class PageOptionsForm extends JOTDBForm
 {
 
-    public static final String NAMESPACE = "dataNameSpace";
-    public static final String PAGE_NAME = "dataPageName";
-    public static final String AUTHOR = "dataAuthor";
-    public static final String DOC_TYPE = "dataDocType";
-    public static final String BLOG_ENTRIES = "dataBlogEntries";
-    public static final String BLOG_CAL = "dataBlogCalendar";
-    public static final String BLOG_RSS = "dataBlogRss";
-    public static final String BLOG_RSS_TITLE = "dataBlogRssTitle";
-    public static final String COMMENTS_ENABLED = "dataCommentsEnabled";
-    public static final String COMMENTS_NB = "dataCommentsNb";
-    public static final String COMMENTS_GUEST = "dataCommentsGuest";
-    public static final String COMMENTS_EMAIL = "dataCommentsEmail";
+    public static final String NAMESPACE = "nameSpace";
+    public static final String PAGE_NAME = "pageName";
+    public static final String AUTHOR = "author";
+    public static final String DOC_TYPE = "docType";
+    public static final String BLOG_ENTRIES = "blogEntries";
+    public static final String BLOG_CAL = "blogCalendar";
+    public static final String BLOG_RSS = "blogRss";
+    public static final String BLOG_RSS_TITLE = "blogRssTitle";
+    public static final String COMMENTS_ENABLED = "commentsEnabled";
+    public static final String COMMENTS_NB = "commentsNb";
+    public static final String COMMENTS_GUEST = "commentsGuest";
+    public static final String COMMENTS_EMAIL = "commentsEmail";
 
     //private String currentPage=null;
     //private String currentNs=null;
@@ -142,12 +142,11 @@ public class PageOptionsForm extends JOTDBForm
 
     public void updateModel(JOTFlowRequest request) throws Exception
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
         String page = request.getParameter(Constants.PAGE_NAME_SHORT);
         String ns = request.getParameter(Constants.NAMESPACE_SHORT);
-        params.addCondition(new JOTSQLCondition(PAGE_NAME, JOTSQLCondition.IS_EQUAL, page));
-        params.addCondition(new JOTSQLCondition(NAMESPACE, JOTSQLCondition.IS_EQUAL, ns));
-        model = JOTQueryManager.findOrCreateOne(PageOptions.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition(PAGE_NAME, JOTSQLCondition.IS_EQUAL, page);
+        JOTSQLCondition cond2=new JOTSQLCondition(NAMESPACE, JOTSQLCondition.IS_EQUAL, ns);
+        model = JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOrCreateOne();
         layoutForm(request);
     }
 

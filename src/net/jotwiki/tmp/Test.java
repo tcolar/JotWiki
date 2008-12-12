@@ -10,10 +10,10 @@ package net.jotwiki.tmp;
 import java.io.File;
 import net.jot.persistance.JOTModel;
 import net.jot.persistance.JOTPersistanceManager;
-import net.jot.persistance.query.JOTQueryManager;
 import net.jot.prefs.JOTPreferences;
 import net.jot.captcha.generators.JOTSTDCaptchaGenerator;
 import net.jot.image.writers.JOTBMPImageWriter;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jotwiki.db.WikiProfile;
 import net.jotwiki.db.WikiProfileSet;
 import net.jotwiki.db.WikiUser;
@@ -70,7 +70,7 @@ public class Test
         System.out.println("**************");
         System.setProperty("jot.prefs", "web/jotconf/jot.properties");
         JOTPreferences.getInstance().initPrefs();
-        JOTPersistanceManager.init(JOTPreferences.getInstance());
+        JOTPersistanceManager.getInstance().init(JOTPreferences.getInstance());
         
         /*
         deleteTableEntry(WikiProfile.class, 20);
@@ -85,18 +85,18 @@ public class Test
         
         //JOTQueryManager.dumpToCSV(System.out, WikiUser.class);
         System.out.println("**************");
-        JOTQueryManager.dumpToCSV(System.out, WikiUser.class);
+        JOTQueryBuilder.dumpToCSV(System.out, WikiUser.class);
         System.out.println("**************");
-        JOTQueryManager.dumpToCSV(System.out, WikiProfile.class);
+        JOTQueryBuilder.dumpToCSV(System.out, WikiProfile.class);
         System.out.println("**************");
-        JOTQueryManager.dumpToCSV(System.out, WikiProfileSet.class);
+        JOTQueryBuilder.dumpToCSV(System.out, WikiProfileSet.class);
         System.out.println("**************");
     }
     
     /** use to manually remove a broken/obsolete table entry */
     private static void deleteTableEntry(Class modelClass, long id) throws Exception
     {
-        JOTModel model=JOTQueryManager.findByID(modelClass, id);
+        JOTModel model=JOTQueryBuilder.findByID(modelClass, id);
         if(model!=null)
         {
             model.delete();

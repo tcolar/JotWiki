@@ -10,8 +10,7 @@ package net.jotwiki.db;
 import net.jot.persistance.JOTModel;
 import net.jot.persistance.JOTModelMapping;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
-import net.jot.persistance.query.JOTQueryManager;
+import net.jot.persistance.builders.JOTQueryBuilder;
 
 /**
  * Page Options DB object.
@@ -138,10 +137,9 @@ public class PageOptions extends JOTModel
      */
     public static PageOptions getPageOptions(String ns, String page) throws Exception
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns));
-        params.addCondition(new JOTSQLCondition("dataPageName", JOTSQLCondition.IS_EQUAL, page));
-        PageOptions options =  (PageOptions) JOTQueryManager.findOrCreateOne(PageOptions.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns);
+        JOTSQLCondition cond2=new JOTSQLCondition("dataPageName", JOTSQLCondition.IS_EQUAL, page);
+        PageOptions options =  (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOrCreateOne();
         return options;
     }
 

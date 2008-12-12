@@ -13,7 +13,7 @@ import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTModel;
 import net.jot.persistance.JOTModelMapping;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 
 /**
@@ -23,16 +23,16 @@ import net.jot.persistance.query.JOTQueryManager;
 public class PageLock extends JOTModel
 {
 
-  public String dataNameSpace = "";
-  public String dataPage = "";
-  public String dataAuthor = "";
-  public long dataLockTime = -1;
+  public String nameSpace = "";
+  public String page = "";
+  public String author = "";
+  public long lockTime = -1;
 
   public void customize(JOTModelMapping mapping)
   {
-    mapping.defineFieldSize("dataNameSpace", 40);
-    mapping.defineFieldSize("dataPage", 200);
-    mapping.defineFieldSize("dataAuthor", 80);
+    mapping.defineFieldSize("nameSpace", 40);
+    mapping.defineFieldSize("page", 200);
+    mapping.defineFieldSize("author", 80);
   }
 
   public String defineStorage()
@@ -49,17 +49,16 @@ public class PageLock extends JOTModel
    */
   public static PageLock getPageLock(String ns, String page, boolean createIfMising) throws Exception
   {
-    JOTSQLQueryParams params = new JOTSQLQueryParams();
-    params.addCondition(new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns));
-    params.addCondition(new JOTSQLCondition("dataPage", JOTSQLCondition.IS_EQUAL, page));
+    JOTSQLCondition cond=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
+    JOTSQLCondition cond2=new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, page);
     PageLock lock = null;
     if (createIfMising)
     {
-      lock = (PageLock) JOTQueryManager.findOrCreateOne(PageLock.class, params);
+      lock = (PageLock) JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).findOrCreateOne();
     }
     else
     {
-      lock = (PageLock) JOTQueryManager.findOne(PageLock.class, params);
+      lock = (PageLock) JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).findOne();
     }
     return lock;
   }
@@ -110,13 +109,12 @@ public class PageLock extends JOTModel
     public static int removeExpiredNsLocks(String namespace, int length)
     {
         int cpt=0;
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
         Long cuttofTime=new Long(new Date().getTime()-(1000*60*length));
-        params.addCondition(new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, namespace));
-        params.addCondition(new JOTSQLCondition("dataLockTime", JOTSQLCondition.IS_LOWER, cuttofTime));
+        JOTSQLCondition cond=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, namespace);
+        JOTSQLCondition cond2=new JOTSQLCondition("lockTime", JOTSQLCondition.IS_LOWER, cuttofTime);
         try
         {
-            Vector locks =  JOTQueryManager.find(PageLock.class, params);
+            Vector locks =  JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).find().getAllResults();
             for(int i=0;i!=locks.size();i++)
             {
                 PageLock lock=(PageLock)locks.get(i);
@@ -132,42 +130,42 @@ public class PageLock extends JOTModel
 
   public String getAuthor()
   {
-    return dataAuthor;
+    return author;
   }
 
   public void setAuthor(String dataAuthor)
   {
-    this.dataAuthor = dataAuthor;
+    this.author = dataAuthor;
   }
 
   public String getNameSpace()
   {
-    return dataNameSpace;
+    return nameSpace;
   }
 
   public void setPage(String dataPage)
   {
-    this.dataPage = dataPage;
+    this.page = dataPage;
   }
 
   public void setLockTime(long lockTime)
   {
-    this.dataLockTime = lockTime;
+    this.lockTime = lockTime;
   }
 
   public String getPage()
   {
-    return dataPage;
+    return page;
   }
 
   public long getLockTime()
   {
-    return dataLockTime;
+    return lockTime;
   }
 
   public void setNameSpace(String dataNameSpace)
   {
-    this.dataNameSpace = dataNameSpace;
+    this.nameSpace = dataNameSpace;
   }
 
 }

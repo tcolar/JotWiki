@@ -19,7 +19,7 @@ public class SetupUser extends WikiUser
 
     public SetupUser()
     {
-        dataLogin = "admin";
+        login = "admin";
     }
 
     public final void save() throws Exception

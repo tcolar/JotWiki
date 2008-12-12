@@ -22,32 +22,32 @@ public class WikiPermission extends JOTAuthPermission
 {
     // high level "dangerous" permissions
     // full acess to everything (superuser : admin)
-    public static final String _FULL_ACCESS_ = "_FULL_ACCESS_";
+    public transient static final String _FULL_ACCESS_ = "_FULL_ACCESS_";
     // setup access, almost full permissions
-    public static final String SETUP = "SETUP";
+    public transient static final String SETUP = "SETUP";
     // access to file system !
-    public static final String MANAGE_FILES = "MANAGE_FILES";
+    public transient static final String MANAGE_FILES = "MANAGE_FILES";
 
     // User permissions
-    public static final String VIEW_PAGE = "VIEW_PAGE";
-    public static final String SEARCH = "SEARCH";
-    public static final String CREATE_PAGE = "CREATE_PAGE";
-    public static final String EDIT_OWN_PAGE = "EDIT_OWN_PAGE";
-    public static final String EDIT_OTHERS_PAGE = "EDIT_OTHERS_PAGE";
-    public static final String DELETE_OWN_PAGE = "DELETE_OWN_PAGE";
-    public static final String DELETE_OTHERS_PAGE = "DELETE_OTHERS_PAGE";
+    public transient static final String VIEW_PAGE = "VIEW_PAGE";
+    public transient static final String SEARCH = "SEARCH";
+    public transient static final String CREATE_PAGE = "CREATE_PAGE";
+    public transient static final String EDIT_OWN_PAGE = "EDIT_OWN_PAGE";
+    public transient static final String EDIT_OTHERS_PAGE = "EDIT_OTHERS_PAGE";
+    public transient static final String DELETE_OWN_PAGE = "DELETE_OWN_PAGE";
+    public transient static final String DELETE_OTHERS_PAGE = "DELETE_OTHERS_PAGE";
     // files upload.
-    public static final String UPLOAD_FILES = "UPLOAD_FILES";
-    public static final String UPLOAD_FILES_CREATE_FOLDERS = "UPLOAD_FILES_CREATE_FOLDERS";
-    public static final String UPLOAD_FILES_VIEW_FILES = "UPLOAD_FILES_VIEW_FILES";
-    public static final String UPLOAD_FILES_BROWSING = "UPLOAD_FILES_BROWSING";
-    public static final String UPLOAD_FILES_UPDATE = "UPLOAD_FILES_UPDATE_FILES";
-    public static final String UPLOAD_FILES_DELETE = "UPLOAD_FILES_DELETING";
-    public static final String UPLOAD_FILES_ADD_FILES = "UPLOAD_FILES_ADDING";
+    public transient static final String UPLOAD_FILES = "UPLOAD_FILES";
+    public transient static final String UPLOAD_FILES_CREATE_FOLDERS = "UPLOAD_FILES_CREATE_FOLDERS";
+    public transient static final String UPLOAD_FILES_VIEW_FILES = "UPLOAD_FILES_VIEW_FILES";
+    public transient static final String UPLOAD_FILES_BROWSING = "UPLOAD_FILES_BROWSING";
+    public transient static final String UPLOAD_FILES_UPDATE = "UPLOAD_FILES_UPDATE_FILES";
+    public transient static final String UPLOAD_FILES_DELETE = "UPLOAD_FILES_DELETING";
+    public transient static final String UPLOAD_FILES_ADD_FILES = "UPLOAD_FILES_ADDING";
     // manage stuff
-    public static final String MANAGE_USERS = "CREATE_USERS";
-    public static final String MANAGE_PROFILES = "CREATE_PROFILES";
-    public static final String MANAGE_NAMESPACES = "CREATE_PROFILES";
+    public transient static final String MANAGE_USERS = "CREATE_USERS";
+    public transient static final String MANAGE_PROFILES = "CREATE_PROFILES";
+    public transient static final String MANAGE_NAMESPACES = "CREATE_PROFILES";
 
     // Note: if adding new permissins, probably need to update ProfileForm !
     public String defineStorage()

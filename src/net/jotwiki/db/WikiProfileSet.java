@@ -16,9 +16,9 @@ import net.jot.persistance.JOTModelMapping;
  */
 public class WikiProfileSet extends JOTModel
 {
-    public long dataUser;
-    public String dataNameSpace="";
-    public long dataProfile;
+    public long user;
+    public String nameSpace="";
+    public long profile;
     
     public void customize(JOTModelMapping mapping)
     {
@@ -32,32 +32,32 @@ public class WikiProfileSet extends JOTModel
 
     public String getNameSpace()
     {
-        return dataNameSpace;
+        return nameSpace;
     }
 
     public long getProfile()
     {
-        return dataProfile;
+        return profile;
     }
 
     public long getUser()
     {
-        return dataUser;
+        return user;
     }
 
     public void setNameSpace(String dataNameSpace)
     {
-        this.dataNameSpace = dataNameSpace;
+        this.nameSpace = dataNameSpace;
     }
 
     public void setProfile(long dataProfile)
     {
-        this.dataProfile = dataProfile;
+        this.profile = dataProfile;
     }
 
     public void setUser(long dataUser)
     {
-        this.dataUser = dataUser;
+        this.user = dataUser;
     }
 
 }

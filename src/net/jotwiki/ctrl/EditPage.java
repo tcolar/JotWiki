@@ -9,7 +9,7 @@ package net.jotwiki.ctrl;
 
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 import net.jot.web.ctrl.JOTController;
 import net.jot.web.views.JOTMessageView;
@@ -53,9 +53,8 @@ public class EditPage extends JOTController
         }
         if (pageName != null)
         {
-            JOTSQLQueryParams params = new JOTSQLQueryParams();
-            params.addCondition(new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName));
-            if (JOTQueryManager.findOne(PageOptions.class, params) == null)
+            JOTSQLCondition cond=new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName);
+            if (JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).findOne() == null)
             {
                 request.setParameter("pageName", pageName);
                 request.setParameter("pageContent", page);

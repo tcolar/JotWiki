@@ -19,12 +19,12 @@ import net.jot.persistance.JOTModelMapping;
 public class WikiSubProfiles extends JOTModel
 {
     /** The "parent" profile ID*/
-    public long dataProfile;
+    public long profile;
     /** The sub profile that can be assigned by the owner of the "parent" profile.*/
-    public long dataSubProfile;
+    public long subProfile;
     
     /** If we have one with sub=0, it means ANY subs*/
-    public static final long ANY_SUBPROFILE=0;
+    public transient static final long ANY_SUBPROFILE=0;
     
     public void customize(JOTModelMapping mapping)
     {
@@ -37,22 +37,22 @@ public class WikiSubProfiles extends JOTModel
 
     public long getSubProfile()
     {
-        return dataSubProfile;
+        return subProfile;
     }
     
     public long getProfile()
     {
-        return dataProfile;
+        return profile;
     }
 
     public void setProfile(long dataProfile)
     {
-        this.dataProfile = dataProfile;
+        this.profile = dataProfile;
     }
 
     public void setSubProfile(long dataSubProfile)
     {
-        this.dataSubProfile = dataSubProfile;
+        this.subProfile = dataSubProfile;
     }
     
 }

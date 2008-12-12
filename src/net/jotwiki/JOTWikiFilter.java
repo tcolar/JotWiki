@@ -135,7 +135,7 @@ public class JOTWikiFilter extends JOTMainFilter implements Filter
                 // logger	
                 initLogger(prefs);
 
-                JOTPersistanceManager.init(JOTPreferences.getInstance());
+                JOTPersistanceManager.getInstance().init(JOTPreferences.getInstance());
             } catch (Exception e)
             {
                 initError = new Exception("Initialization error: ", e);

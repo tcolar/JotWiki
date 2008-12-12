@@ -102,6 +102,8 @@ public class WikiPreferences extends JOTPropertiesPreferences
         return prefs;
     }
 
+    private WikiPreferences(){}
+    
     /**
      * Gets the wiki root folder ie: /opt/jotwiki/
      * @return

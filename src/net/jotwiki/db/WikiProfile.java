@@ -10,9 +10,7 @@ package net.jotwiki.db;
 import java.util.Vector;
 import net.jot.db.authentication.JOTAuthProfile;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
-import net.jot.persistance.query.JOTQueryManager;
-import net.jotwiki.db.WikiSubProfiles;
+import net.jot.persistance.builders.JOTQueryBuilder;
 
 /**
  * Defines the permissions composing a profile.
@@ -23,10 +21,10 @@ import net.jotwiki.db.WikiSubProfiles;
 public class WikiProfile extends JOTAuthProfile
 {
 
-    public boolean dataRemovable = true;
-    public static final String STANDARD_GUEST_PROFILE = "~~GUEST_PROFILE~~";
+    public boolean removable = true;
+    public transient static final String STANDARD_GUEST_PROFILE = "~~GUEST_PROFILE~~";
     // vector of strings (profileName)
-    public static Vector profilesList = null;
+    public transient static Vector profilesList = null;
 
     public String defineStorage()
     {
@@ -35,12 +33,12 @@ public class WikiProfile extends JOTAuthProfile
 
     public boolean isRemovable()
     {
-        return dataRemovable;
+        return removable;
     }
 
     public void setRemovable(boolean b)
     {
-        dataRemovable = b;
+        removable = b;
     }
 
     /**
@@ -56,18 +54,16 @@ public class WikiProfile extends JOTAuthProfile
         // delete the profile itself.
         prof.delete();
         // delete this profile subprofile entries.
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, profId));
-        Vector entries = JOTQueryManager.find(WikiSubProfiles.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, profId);
+        Vector entries = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond).find().getAllResults();
         for (int i = 0; i != entries.size(); i++)
         {
             WikiSubProfiles prfEntry = (WikiSubProfiles) entries.get(i);
             prfEntry.delete();
         }
         // delete entries from profiles that have this as a subprofile.
-        JOTSQLQueryParams params2 = new JOTSQLQueryParams();
-        params2.addCondition(new JOTSQLCondition("dataSubProfile", JOTSQLCondition.IS_EQUAL, profId));
-        Vector entries2 = JOTQueryManager.find(WikiSubProfiles.class, params2);
+        JOTSQLCondition cond2=new JOTSQLCondition("subProfile", JOTSQLCondition.IS_EQUAL, profId);
+        Vector entries2 = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond2).find().getAllResults();
         for (int i = 0; i != entries2.size(); i++)
         {
             WikiSubProfiles prfEntry = (WikiSubProfiles) entries2.get(i);
@@ -85,15 +81,14 @@ public class WikiProfile extends JOTAuthProfile
     {
         WikiProfile prof = (WikiProfile) getByName(profile);
         Long profileId = new Long(prof.getId());
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, profileId));
-        Vector entries = JOTQueryManager.find(WikiProfileSet.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, profileId);
+        Vector entries = JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).find().getAllResults();
         String results = "";
         for (int i = 0; i != entries.size(); i++)
         {
             WikiProfileSet set = (WikiProfileSet) entries.get(i);
             long user = set.getUser();
-            WikiUser usr = (WikiUser) JOTQueryManager.findByID(WikiUser.class, user);
+            WikiUser usr = (WikiUser) JOTQueryBuilder.findByID(WikiUser.class, user);
             results += usr.getLogin() + ", ";
         }
         return results;
@@ -109,9 +104,8 @@ public class WikiProfile extends JOTAuthProfile
 
     public static WikiProfile getByName(String profileName) throws Exception
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataName", JOTSQLCondition.IS_EQUAL, profileName));
-        return (WikiProfile) JOTQueryManager.findOne(WikiProfile.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profileName);
+        return (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
     }
     
     public static boolean findPermission(WikiProfile profile, String permission) throws Exception

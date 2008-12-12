@@ -94,12 +94,12 @@ public class FileCleaner implements JOTScheduledItem
     // do the old DB Backups 
     int keepDbBackupsFor=WikiPreferences.getInstance().getDefaultedInt(WikiPreferences.GLOBAL_KEEP_DB_BACKUPS_FOR,new Integer(15)).intValue();
     FilenameFilter oldDbBackupsFilter=new WikiTempFileFilter(keepDbBackupsFor,null,null);
-    Hashtable dbs=JOTPersistanceManager.getDatabases();
+    Hashtable dbs=JOTPersistanceManager.getInstance().getDatabases();
     Enumeration e=dbs.keys();
     while(e.hasMoreElements())
     {
       String db=(String)e.nextElement();
-      String backupFolder=JOTPersistanceManager.getDbBackupFolder(db);
+      String backupFolder=JOTPersistanceManager.getInstance().getDbBackupFolder(db);
       File f=new File(backupFolder);
       if(f.exists() && f.isDirectory())
       {

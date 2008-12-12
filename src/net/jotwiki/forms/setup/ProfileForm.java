@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 import net.jot.web.JOTFlowRequest;
 import net.jot.web.forms.JOTFormConst;
@@ -87,11 +87,10 @@ public class ProfileForm extends JOTGeneratedForm
         {
             profName = request.getParameter("profile");
 
-            JOTSQLQueryParams params = new JOTSQLQueryParams();
-            params.addCondition(new JOTSQLCondition("dataName", JOTSQLCondition.IS_EQUAL, profName));
+            JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profName);
             try
             {
-                WikiProfile profile = (WikiProfile) JOTQueryManager.findOne(WikiProfile.class, params);
+                WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
                 if (profile != null)
                 {
                     profileId = profile.getId();
@@ -200,9 +199,8 @@ public class ProfileForm extends JOTGeneratedForm
         } else
         {
             //update existing one
-            JOTSQLQueryParams params = new JOTSQLQueryParams();
-            params.addCondition(new JOTSQLCondition("dataName", JOTSQLCondition.IS_EQUAL, request.getParameter(OLD_PROFILE_NAME)));
-            WikiProfile profile = (WikiProfile) JOTQueryManager.findOne(WikiProfile.class, params);
+            JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, request.getParameter(OLD_PROFILE_NAME));
+            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
             if (profile != null)
             {
                 if (isRemovable(OLD_PROFILE_NAME))
@@ -220,9 +218,8 @@ public class ProfileForm extends JOTGeneratedForm
         {
             // deal with the permissions
             // remove existing entries.
-            JOTSQLQueryParams params = new JOTSQLQueryParams();
-            params.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, new Long(id)));
-            Vector perms = JOTQueryManager.find(WikiPermission.class, params);
+            JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, new Long(id));
+            Vector perms = JOTQueryBuilder.selectQuery(WikiPermission.class).where(cond).find().getAllResults();
             for (int i = 0; i != perms.size(); i++)
             {
                 WikiPermission perm = (WikiPermission) perms.get(i);
@@ -247,9 +244,8 @@ public class ProfileForm extends JOTGeneratedForm
 
             // deal with subprofiles
             // remove current ones
-            JOTSQLQueryParams params2 = new JOTSQLQueryParams();
-            params2.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, new Long(id)));
-            Vector subs = JOTQueryManager.find(WikiSubProfiles.class, params2);
+            JOTSQLCondition cond2=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, new Long(id));
+            Vector subs = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond2).find().getAllResults();
             for (int i = 0; i != subs.size(); i++)
             {
                 WikiSubProfiles sub = (WikiSubProfiles) subs.get(i);
@@ -367,9 +363,8 @@ public class ProfileForm extends JOTGeneratedForm
         boolean result = true;
         try
         {
-            JOTSQLQueryParams params = new JOTSQLQueryParams();
-            params.addCondition(new JOTSQLCondition("dataName", JOTSQLCondition.IS_EQUAL, profName));
-            WikiProfile profile = (WikiProfile) JOTQueryManager.findOne(WikiProfile.class, params);
+            JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profName);
+            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
             if (profile != null)
             {
                 result = profile.isRemovable();

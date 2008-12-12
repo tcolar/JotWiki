@@ -36,6 +36,7 @@ public class AdminFileManager extends JOTFileBrowserController
 		JOTFileBrowserSession fbSession=new JOTFileBrowserSession(new File(rootFolder), new File(startFolder),JOTFileBrowserHelper.TYPE_BROWSE);
 		fbSession.setTitle("Administrator File Manager");
 		fbSession.setNbOfUploadFields(1);
+        fbSession.setMaxUploadSize(100000000);
 		fbSession.setAllowCreateFolders(true);
 		fbSession.setAllowUploadFile(true);
 		fbSession.setAllowDelete(true);

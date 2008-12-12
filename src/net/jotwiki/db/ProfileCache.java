@@ -12,9 +12,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLOrderBy;
-import net.jot.persistance.JOTSQLQueryParams;
-import net.jot.persistance.query.JOTQueryManager;
+import net.jot.persistance.builders.JOTQueryBuilder;
 
 /**
  * Caches users, profiles/permissions and such for performance reasons
@@ -23,7 +21,8 @@ import net.jot.persistance.query.JOTQueryManager;
 public class ProfileCache
 {
 
-    private static ProfileCache cache = null;
+    // singleton
+    private final static ProfileCache cache = new ProfileCache();
     /** hashtable of profileData objects*/
     private TreeMap profiles = new TreeMap();
     /** cache profile name to id map (String name -> Long id)*/
@@ -42,14 +41,11 @@ public class ProfileCache
      */
     private TreeMap profilePerms = new TreeMap();
 
-    public static ProfileCache getInstance()
+    public final static ProfileCache getInstance()
     {
-        if (cache == null)
-        {
-            cache = new ProfileCache();
-        }
         return cache;
     }
+    private ProfileCache(){}
 
     public WikiProfile getProfile(long profileId) throws Exception
     {
@@ -59,7 +55,7 @@ public class ProfileCache
             synchronized (this)
             {
                 // get the profile
-                WikiProfile profile = (WikiProfile) JOTQueryManager.findByID(WikiProfile.class, profileId);
+                WikiProfile profile = (WikiProfile) JOTQueryBuilder.findByID(WikiProfile.class, profileId);
                 ProfileData data = new ProfileData(profile);
                 // get the sub profiles
                 if (profile != null)
@@ -84,9 +80,8 @@ public class ProfileCache
     public Vector getSubProfiles(long profileId) throws Exception
     {
         Vector results = new Vector();
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, new Long(profileId)));
-        Vector subs = JOTQueryManager.find(WikiSubProfiles.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, new Long(profileId));
+        Vector subs = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond).find().getAllResults();
         // read and store them
         for (int i = 0; subs != null && i != subs.size(); i++)
         {
@@ -138,7 +133,7 @@ public class ProfileCache
                 profileNames = new TreeMap();
                 try
                 {
-                    Vector v = JOTQueryManager.find(WikiProfile.class, null);
+                    Vector v = JOTQueryBuilder.findAll(WikiProfile.class).getAllResults();
                     for (int i = 0; i != v.size(); i++)
                     {
                         WikiProfile profile = (WikiProfile) v.get(i);
@@ -241,9 +236,8 @@ public class ProfileCache
                 JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching profile assignments for: " + user.getLogin());
 
                 TreeMap assignments = new TreeMap();
-                JOTSQLQueryParams params = new JOTSQLQueryParams();
-                params.addCondition(new JOTSQLCondition("dataUser", JOTSQLCondition.IS_EQUAL, new Long(user.getId())));
-                Vector userProfiles = JOTQueryManager.find(WikiProfileSet.class, params);
+                JOTSQLCondition cond=new JOTSQLCondition("dataUser", JOTSQLCondition.IS_EQUAL, new Long(user.getId()));
+                Vector userProfiles = JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).find().getAllResults();
                 if (userProfiles != null)
                 {
                     for (int i = 0; i != userProfiles.size(); i++)
@@ -277,9 +271,8 @@ public class ProfileCache
             {
                 JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching perms for profile: " + profileId);
                 Vector perms = new Vector();
-                JOTSQLQueryParams params = new JOTSQLQueryParams();
-                params.addCondition(new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, profileId));
-                Vector profPerms = JOTQueryManager.find(WikiPermission.class, params);
+                JOTSQLCondition cond=new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, profileId);
+                Vector profPerms = JOTQueryBuilder.selectQuery(WikiPermission.class).where(cond).find().getAllResults();
                 if (profPerms != null)
                 {
                     for (int i = 0; i != profPerms.size(); i++)
@@ -309,9 +302,7 @@ public class ProfileCache
                 {
                     users = new TreeMap();
                     JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching user list");
-                    JOTSQLQueryParams params = new JOTSQLQueryParams();
-                    params.addOrderBy(new JOTSQLOrderBy("dataLogin"));
-                    Vector userV = JOTQueryManager.find(WikiUser.class, params);
+                    Vector userV = JOTQueryBuilder.selectQuery(WikiUser.class).orderBy("dataLogin").find().getAllResults();
                     if (userV != null)
                     {
                         for (int i = 0; i != userV.size(); i++)

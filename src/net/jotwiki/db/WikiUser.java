@@ -25,52 +25,52 @@ import net.jotwiki.forms.LoginForm;
 public class WikiUser extends JOTAuthUser
 {
 
-  public final static String __GUEST_USER__ = "~~guest~~";
-  public final static String __ANY_NS__ = "~~ANY~~";
+  public final static transient String __GUEST_USER__ = "~~guest~~";
+  public final static transient String __ANY_NS__ = "~~ANY~~";
 
 
-  public String dataDescription = "";
-  public String dataFirstName = "";
-  public String dataLastName = "";
-  public boolean dataRemovable = true;
+  public String description = "";
+  public String firstName = "";
+  public String lastName = "";
+  public boolean removable = true;
 
   public void customize(JOTModelMapping mapping)
   {
     super.customize(mapping);
-    mapping.defineFieldSize("dataFirstName", 30);
-    mapping.defineFieldSize("dataLastName", 30);
-    mapping.defineFieldSize("dataDescription", 50);
+    mapping.defineFieldSize("firstName", 30);
+    mapping.defineFieldSize("lastName", 30);
+    mapping.defineFieldSize("description", 50);
   }
 
   
   public String getDescription()
   {
-    return dataDescription;
+    return description;
   }
 
   public void setDescription(String description)
   {
-    this.dataDescription = description;
+    this.description = description;
   }
 
   public String getFirstName()
   {
-    return dataFirstName;
+    return firstName;
   }
 
   public void setFirstName(String firstName)
   {
-    this.dataFirstName = firstName;
+    this.firstName = firstName;
   }
 
   public String getLastName()
   {
-    return dataLastName;
+    return lastName;
   }
 
   public void setLastName(String lastName)
   {
-    this.dataLastName = lastName;
+    this.lastName = lastName;
   }
 
   public String defineStorage()
@@ -80,32 +80,32 @@ public class WikiUser extends JOTAuthUser
 
   public String getLogin()
   {
-    return dataLogin;
+    return login;
   }
 
   public void setLogin(String login)
   {
-    this.dataLogin = login.toLowerCase();
+    this.login = login.toLowerCase();
   }
 
   public String getPassword()
   {
-    return dataPassword;
+    return password;
   }
 
   public void setPassword(String password)
   {
-    this.dataPassword = password;
+    this.password = password;
   }
 
    public boolean isRemovable()
   {
-    return dataRemovable;
+    return removable;
   }
 
   public void setRemovable(boolean b)
   {
-    dataRemovable = b;
+    removable = b;
   }
   
   /**

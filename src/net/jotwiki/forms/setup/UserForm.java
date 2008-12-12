@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 import net.jot.web.JOTFlowRequest;
 import net.jot.web.forms.JOTDBForm;
@@ -37,12 +37,12 @@ import net.jotwiki.db.WikiUser;
 public class UserForm extends JOTDBForm
 {
 
-    private final static String LOGIN = "dataLogin";
-    private final static String PASSWORD = "dataPassword";
+    private final static String LOGIN = "login";
+    private final static String PASSWORD = "password";
     private final static String PASSWORD2 = "pasword2";
-    private final static String FIRST = "dataFirstName";
-    private final static String LAST = "dataLastName";
-    private final static String DESCRIPTION = "dataDescription";
+    private final static String FIRST = "firstName";
+    private final static String LAST = "lastName";
+    private final static String DESCRIPTION = "description";
     private final static String DEFAULT_PROFILE = "defaultProfile";
 
     public void layoutForm(JOTFlowRequest request)
@@ -53,7 +53,7 @@ public class UserForm extends JOTDBForm
         addFormField(new JOTFormTextField(LOGIN, "Login", 20, ""));
 
         addFormField(new JOTFormPasswordField(PASSWORD, "Password", 10, ""));
-        addFormField(new JOTFormPasswordField(PASSWORD2, "Password Confirmation", 10, (String) model.getFieldValue("dataPassword")));
+        addFormField(new JOTFormPasswordField(PASSWORD2, "Password Confirmation", 10, (String) model.getFieldValue("password")));
         addFormField(new JOTFormTextField(FIRST, "First Name", 20, ""));
         addFormField(new JOTFormTextField(LAST, "Last Name", 20, ""));
         addFormField(new JOTFormTextField(DESCRIPTION, "Description", 30, ""));
@@ -131,7 +131,7 @@ public class UserForm extends JOTDBForm
     {
         boolean isNew = model.isNew();
         String login = get(LOGIN).getValue();
-        String oldLogin = (String) model.getFieldValue("dataLogin");
+        String oldLogin = (String) model.getFieldValue("login");
         String password = get(PASSWORD).getValue();
         String password2 = get(PASSWORD2).getValue();
         Hashtable results = new Hashtable();
@@ -181,7 +181,7 @@ public class UserForm extends JOTDBForm
 
     public void save(JOTFlowRequest request) throws Exception
     {
-        String oldLogin = (String) model.getFieldValue("dataLogin");
+        String oldLogin = (String) model.getFieldValue("login");
         boolean isNew = model.isNew();
         String login = get(LOGIN).getValue();
         boolean isGuest = login.equals(WikiUser.__GUEST_USER__);
@@ -256,13 +256,12 @@ public class UserForm extends JOTDBForm
      */
     private void assignProfile(long userId, String ns, long profileId)
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataUser", JOTSQLCondition.IS_EQUAL, new Long(userId)));
-        params.addCondition(new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns));
+        JOTSQLCondition cond=new JOTSQLCondition("user", JOTSQLCondition.IS_EQUAL, new Long(userId));
+        JOTSQLCondition cond2=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
         try
         {
             // updates existing assignmenet or create new one if none yet.
-            WikiProfileSet set = (WikiProfileSet) JOTQueryManager.findOrCreateOne(WikiProfileSet.class, params);
+            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).where(cond2).findOrCreateOne();
             set.setUser(userId);
             set.setNameSpace(ns);
             set.setProfile(profileId);
@@ -275,12 +274,11 @@ public class UserForm extends JOTDBForm
 
     private void removeProfileAssignment(long userId, String ns)
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition("dataUser", JOTSQLCondition.IS_EQUAL, new Long(userId)));
-        params.addCondition(new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns));
+        JOTSQLCondition cond=new JOTSQLCondition("user", JOTSQLCondition.IS_EQUAL, new Long(userId));
+        JOTSQLCondition cond2=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
         try
         {
-            WikiProfileSet set = (WikiProfileSet) JOTQueryManager.findOne(WikiProfileSet.class, params);
+            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).where(cond2).findOne();
             if(set!=null)
                 set.delete();
         } catch (Exception e)

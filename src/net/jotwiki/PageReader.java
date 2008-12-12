@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
-import net.jot.persistance.JOTSQLQueryParams;
+import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.persistance.query.JOTQueryManager;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
@@ -107,10 +107,9 @@ public class PageReader
 
     public static PageOptions getPageOptions(String ns, String pageName) throws Exception
     {
-        JOTSQLQueryParams params = new JOTSQLQueryParams();
-        params.addCondition(new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName));
-        params.addCondition(new JOTSQLCondition(PageOptionsForm.NAMESPACE, JOTSQLCondition.IS_EQUAL, ns));
-        PageOptions options = (PageOptions) JOTQueryManager.findOne(PageOptions.class, params);
+        JOTSQLCondition cond=new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName);
+        JOTSQLCondition cond2=new JOTSQLCondition(PageOptionsForm.NAMESPACE, JOTSQLCondition.IS_EQUAL, ns);
+        PageOptions options = (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOne();
         return options;
     }
     
