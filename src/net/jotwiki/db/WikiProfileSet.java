@@ -22,7 +22,7 @@ public class WikiProfileSet extends JOTModel
     
     public void customize(JOTModelMapping mapping)
     {
-        mapping.defineFieldSize("dataNameSpace", 30);
+        mapping.defineFieldSize("nameSpace", 30);
     }
 
     public String defineStorage()

@@ -80,7 +80,7 @@ public class ProfileCache
     public Vector getSubProfiles(long profileId) throws Exception
     {
         Vector results = new Vector();
-        JOTSQLCondition cond=new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, new Long(profileId));
+        JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, new Long(profileId));
         Vector subs = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond).find().getAllResults();
         // read and store them
         for (int i = 0; subs != null && i != subs.size(); i++)
@@ -236,7 +236,7 @@ public class ProfileCache
                 JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching profile assignments for: " + user.getLogin());
 
                 TreeMap assignments = new TreeMap();
-                JOTSQLCondition cond=new JOTSQLCondition("dataUser", JOTSQLCondition.IS_EQUAL, new Long(user.getId()));
+                JOTSQLCondition cond=new JOTSQLCondition("user", JOTSQLCondition.IS_EQUAL, new Long(user.getId()));
                 Vector userProfiles = JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).find().getAllResults();
                 if (userProfiles != null)
                 {
@@ -271,7 +271,7 @@ public class ProfileCache
             {
                 JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching perms for profile: " + profileId);
                 Vector perms = new Vector();
-                JOTSQLCondition cond=new JOTSQLCondition("dataProfile", JOTSQLCondition.IS_EQUAL, profileId);
+                JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, profileId);
                 Vector profPerms = JOTQueryBuilder.selectQuery(WikiPermission.class).where(cond).find().getAllResults();
                 if (profPerms != null)
                 {
@@ -302,7 +302,7 @@ public class ProfileCache
                 {
                     users = new TreeMap();
                     JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Caching user list");
-                    Vector userV = JOTQueryBuilder.selectQuery(WikiUser.class).orderBy("dataLogin").find().getAllResults();
+                    Vector userV = JOTQueryBuilder.selectQuery(WikiUser.class).orderBy("login").find().getAllResults();
                     if (userV != null)
                     {
                         for (int i = 0; i != userV.size(); i++)

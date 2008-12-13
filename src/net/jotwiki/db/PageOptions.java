@@ -19,28 +19,28 @@ import net.jot.persistance.builders.JOTQueryBuilder;
 public class PageOptions extends JOTModel
 {
 
-    public String dataNameSpace = "";
-    public String dataAuthor = "";
-    public String dataDocType = "Wiki";
-    public Integer dataBlogEntries = new Integer(10);
-    public Boolean dataBlogCalendar = Boolean.FALSE;
-    public Boolean dataBlogRss = Boolean.FALSE;
-    public String dataBlogRssTitle = "";
-    public String dataPageName = "";
-    public Boolean dataCommentsEnabled=Boolean.TRUE;
-    public Integer dataCommentsNb=new Integer(5);
-    public Boolean dataCommentsGuest=Boolean.TRUE;
-    public String dataCommentsEmail="";
+    public String nameSpace = "";
+    public String author = "";
+    public String docType = "Wiki";
+    public Integer blogEntries = new Integer(10);
+    public Boolean blogCalendar = Boolean.FALSE;
+    public Boolean blogRss = Boolean.FALSE;
+    public String blogRssTitle = "";
+    public String pageName = "";
+    public Boolean commentsEnabled=Boolean.TRUE;
+    public Integer commentsNb=new Integer(5);
+    public Boolean commentsGuest=Boolean.TRUE;
+    public String commentsEmail="";
     
 
     public void customize(JOTModelMapping mapping)
     {
-        mapping.defineFieldSize("dataNameSpace", 40);
-        mapping.defineFieldSize("dataPageName", 200);
-        mapping.defineFieldSize("dataAuthor", 80);
-        mapping.defineFieldSize("dataDocType", 40);
-        mapping.defineFieldSize("dataBlogRssTitle", 200);
-        mapping.defineFieldSize("dataCommentsEmail", 200);
+        mapping.defineFieldSize("nameSpace", 40);
+        mapping.defineFieldSize("pageName", 200);
+        mapping.defineFieldSize("author", 80);
+        mapping.defineFieldSize("docType", 40);
+        mapping.defineFieldSize("blogRssTitle", 200);
+        mapping.defineFieldSize("commentsEmail", 200);
     }
 
     public String defineStorage()
@@ -50,82 +50,82 @@ public class PageOptions extends JOTModel
 
     public String getDataAuthor()
     {
-        return dataAuthor;
+        return author;
     }
 
     public void setDataAuthor(String dataAuthor)
     {
-        this.dataAuthor = dataAuthor;
+        this.author = dataAuthor;
     }
 
     public Boolean getDataBlogCalendar()
     {
-        return dataBlogCalendar;
+        return blogCalendar;
     }
 
     public void setDataBlogCalendar(Boolean dataBlogCalendar)
     {
-        this.dataBlogCalendar = dataBlogCalendar;
+        this.blogCalendar = dataBlogCalendar;
     }
 
     public Integer getDataBlogEntries()
     {
-        return dataBlogEntries;
+        return blogEntries;
     }
 
     public void setDataBlogEntries(Integer dataBlogEntries)
     {
-        this.dataBlogEntries = dataBlogEntries;
+        this.blogEntries = dataBlogEntries;
     }
 
     public Boolean getDataBlogRss()
     {
-        return dataBlogRss;
+        return blogRss;
     }
 
     public void setDataBlogRss(Boolean dataBlogRss)
     {
-        this.dataBlogRss = dataBlogRss;
+        this.blogRss = dataBlogRss;
     }
 
     public String getDataBlogRssTitle()
     {
-        return dataBlogRssTitle;
+        return blogRssTitle;
     }
 
     public void setDataBlogRssTitle(String dataBlogRssTitle)
     {
-        this.dataBlogRssTitle = dataBlogRssTitle;
+        this.blogRssTitle = dataBlogRssTitle;
     }
 
     public String getDataDocType()
     {
-        return dataDocType;
+        return docType;
     }
 
     public void setDataDocType(String dataDocType)
     {
-        this.dataDocType = dataDocType;
+        this.docType = dataDocType;
     }
 
     public String getDataNameSpace()
     {
-        return dataNameSpace;
+        return nameSpace;
     }
 
     public void setDataNameSpace(String dataNameSpace)
     {
-        this.dataNameSpace = dataNameSpace;
+        this.nameSpace = dataNameSpace;
     }
 
     public String getDataPageName()
     {
-        return dataPageName;
+        return pageName;
     }
 
     public void setDataPageName(String dataPageName)
     {
-        this.dataPageName = dataPageName;
+        this.pageName = dataPageName;
     }
 
     /**
@@ -137,50 +137,50 @@ public class PageOptions extends JOTModel
      */
     public static PageOptions getPageOptions(String ns, String page) throws Exception
     {
-        JOTSQLCondition cond=new JOTSQLCondition("dataNameSpace", JOTSQLCondition.IS_EQUAL, ns);
-        JOTSQLCondition cond2=new JOTSQLCondition("dataPageName", JOTSQLCondition.IS_EQUAL, page);
+        JOTSQLCondition cond=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
+        JOTSQLCondition cond2=new JOTSQLCondition("pageName", JOTSQLCondition.IS_EQUAL, page);
         PageOptions options =  (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOrCreateOne();
         return options;
     }
 
     public String getCommentsEmail()
     {
-        return dataCommentsEmail;
+        return commentsEmail;
     }
 
     public Boolean getCommentsEnabled()
     {
-        return dataCommentsEnabled;
+        return commentsEnabled;
     }
 
     public Boolean getCommentsGuest()
     {
-        return dataCommentsGuest;
+        return commentsGuest;
     }
 
     public Integer getCommentsNb()
     {
-        return dataCommentsNb;
+        return commentsNb;
     }
 
     public void setCommentsEmail(String dataCommentsEmail)
     {
-        this.dataCommentsEmail = dataCommentsEmail;
+        this.commentsEmail = dataCommentsEmail;
     }
 
     public void setCommentsEnabled(Boolean dataCommentsEnabled)
     {
-        this.dataCommentsEnabled = dataCommentsEnabled;
+        this.commentsEnabled = dataCommentsEnabled;
     }
 
     public void setCommentsGuest(Boolean dataCommentsGuest)
     {
-        this.dataCommentsGuest = dataCommentsGuest;
+        this.commentsGuest = dataCommentsGuest;
     }
 
     public void setCommentsNb(Integer dataCommentsNb)
     {
-        this.dataCommentsNb = dataCommentsNb;
+        this.commentsNb = dataCommentsNb;
     }
 
 }
