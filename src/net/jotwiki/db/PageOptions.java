@@ -18,7 +18,6 @@ import net.jot.persistance.builders.JOTQueryBuilder;
  */
 public class PageOptions extends JOTModel
 {
-
     public String nameSpace = "";
     public String author = "";
     public String docType = "Wiki";
