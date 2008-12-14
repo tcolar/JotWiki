@@ -148,7 +148,7 @@ public class UserForm extends JOTDBForm
             results.put("1", "'Admin' is a restricted name.");
         }
         // check login syntax valid (no special chars , >4 length)
-        if (!oldLogin.equals(login) && !WikiUtilities.isValidUrlSubtring(login))
+        if (!isGuest && !WikiUtilities.isValidUrlSubtring(login))
         {
             results.put("1", "Login can only contain a-z A-Z 0-9 _");
         }
@@ -167,7 +167,7 @@ public class UserForm extends JOTDBForm
             results.put("1", "Password too short (<5)");
         }
         // check password and password2 match
-        if (!isGuest || !password.equals(password2))
+        if (!isGuest && ! password.equals(password2))
         {
             results.put("1", "Passwords don't match");
         }
