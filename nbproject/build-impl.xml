@@ -105,7 +105,7 @@
             </and>
         </condition>
         <available file="${conf.dir}/MANIFEST.MF" property="has.custom.manifest"/>
-        <available file="${conf.dir}/persistence.xml" property="has.persistence.xml"/>
+        <available file="${persistence.xml.dir}/persistence.xml" property="has.persistence.xml"/>
         <condition property="do.war.package.with.custom.manifest">
             <isset property="has.custom.manifest"/>
         </condition>
@@ -157,9 +157,9 @@
         </condition>
         <property name="runmain.jvmargs" value=""/>
     </target>
-    <target depends="init" name="-init-cos">
-        <condition property="ensure.built.source.roots" value="${src.dir}">
-            <isfalse value="${disable.deploy.on.save}"/>
+    <target depends="init" name="-init-cos" unless="deploy.on.save">
+        <condition property="deploy.on.save" value="true">
+            <istrue value="${j2ee.deploy.on.save}"/>
         </condition>
     </target>
     <target name="-post-init">
@@ -391,7 +391,7 @@ exists or setup the property manually. For example like this:
     <target if="has.persistence.xml" name="-copy-persistence-xml">
         <mkdir dir="${build.web.dir}/WEB-INF/classes/META-INF"/>
         <copy todir="${build.web.dir}/WEB-INF/classes/META-INF">
-            <fileset dir="${conf.dir}" includes="persistence.xml"/>
+            <fileset dir="${persistence.xml.dir}" includes="persistence.xml"/>
         </copy>
     </target>
     <target name="-post-compile">
@@ -497,7 +497,7 @@ exists or setup the property manually. For example like this:
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <copyfiles files="${file.reference.servlet-api.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.servlet-api.jar" todir="${dist.ear.dir}"/>
         <copyfiles files="${reference.JavaOnTracks.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.reference.JavaOnTracks.jar" todir="${dist.ear.dir}"/>
-        <copyfiles files="${reference.JavaOnTracks.jar}" todir="${build.web.dir}/"/>
+        <copyfiles files="${reference.JavaOnTracks.jar}" todir="${build.web.dir}//"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Class-Path" value="${manifest.file.reference.servlet-api.jar} ${manifest.reference.JavaOnTracks.jar} "/>
@@ -506,7 +506,7 @@ exists or setup the property manually. For example like this:
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
         <copyfiles files="${file.reference.servlet-api.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${reference.JavaOnTracks.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${reference.JavaOnTracks.jar}" todir="${build.web.dir}/"/>
+        <copyfiles files="${reference.JavaOnTracks.jar}" todir="${build.web.dir}//"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
@@ -624,7 +624,7 @@ exists or setup the property manually. For example like this:
             <arg line="${browser.args} ${browse.url}"/>
         </exec>
     </target>
-    <target depends="init,compile-single" name="run-main">
+    <target depends="init,-init-cos,compile-single" name="run-main">
         <fail unless="run.class">Must select one file in the IDE or set run.class</fail>
         <webproject1:java classname="${run.class}"/>
     </target>
@@ -640,10 +640,10 @@ exists or setup the property manually. For example like this:
     <target if="do.debug.server" name="connect-debugger" unless="is.debugged">
         <nbjpdaconnect address="${jpda.address}" host="${jpda.host}" name="${name}" transport="${jpda.transport}">
             <classpath>
-                <path path="${debug.classpath}:${j2ee.platform.classpath}:${ws.debug.classpaths}"/>
+                <path path="${debug.classpath}:${j2ee.platform.classpath}"/>
             </classpath>
             <sourcepath>
-                <path path="${web.docbase.dir}:${ws.web.docbase.dirs}"/>
+                <path path="${web.docbase.dir}"/>
             </sourcepath>
         </nbjpdaconnect>
     </target>
@@ -798,10 +798,13 @@ exists or setup the property manually. For example like this:
         <echo message="Warning: unable to delete some files in ${build.web.dir}/WEB-INF/lib - they are probably locked by the J2EE server. "/>
         <echo level="info" message="To delete all files undeploy the module from Server Registry in Runtime tab and then use Clean again."/>
     </target>
+    <target depends="init" if="netbeans.home" name="undeploy-clean">
+        <nbundeploy failOnError="false" startServer="false"/>
+    </target>
     <target name="-post-clean">
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target depends="init,deps-clean,do-clean,check-clean,-post-clean" description="Clean build products." name="clean"/>
+    <target depends="init,undeploy-clean,deps-clean,do-clean,check-clean,-post-clean" description="Clean build products." name="clean"/>
     <target depends="clean" description="Clean build products." name="clean-ear"/>
 </project>

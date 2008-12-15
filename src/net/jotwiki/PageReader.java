@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
-import net.jot.persistance.query.JOTQueryManager;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
 import net.jot.web.util.JOTAntiSpam;
