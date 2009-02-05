@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import net.jot.logger.JOTLogger;
+import net.jot.utils.JOTUtilities;
 import net.jot.web.view.JOTView;
 import net.jotwiki.PageReader;
 import net.jotwiki.WikiPreferences;
@@ -23,27 +24,26 @@ import net.jotwiki.db.WikiPermission;
  * Note that it directly returns the data and ends the request.
  * @author tcolar
  */
-public class FetchImage extends JOTView
+public class FetchItem extends JOTView
 {
 
     public void prepareViewData() throws Exception
     {
-
-        String image = request.getParameter("img");
-        if (image != null && PageReader.isImage(image))
+        String item=request.getParameter("item");
+        if (item != null && PageReader.isImage(item))
         {
             // image
             {
-                writeContentType(image.toLowerCase());
+                writeContentType(item.toLowerCase());
             }
-            if (image != null)
+            if (item != null)
             {
-                writeImageFromFile(image);
+                writeImageFromFile(item);
             }
         } else
         {
             // file
-            writeImageFromFile(image);
+            writeImageFromFile(item);
         }
 
         response.flushBuffer();
@@ -52,6 +52,7 @@ public class FetchImage extends JOTView
 
     private void writeContentType(String image)
     {
+        image=image.toLowerCase();
         String type = "image/jpeg";
         if (image.endsWith(".gif"))
         {
@@ -80,8 +81,14 @@ public class FetchImage extends JOTView
             String nameSpace = WikiUtilities.getNamespace(request);
             String imageRoot =
                     WikiPreferences.getInstance().getFilesFolder(nameSpace);
-            //JOTLogger.log(JOTLogger.CAT_FLOW,JOTLogger.DEBUG_LEVEL, JOTViewParser.class, "Caching template: "+templatePath);						
-            reader = new DataInputStream(new FileInputStream(new File(imageRoot, image)));
+            //JOTLogger.log(JOTLogger.CAT_FLOW,JOTLogger.DEBUG_LEVEL, JOTViewParser.class, "Caching template: "+templatePath);
+            File f=new File(imageRoot, image);
+
+            // security check
+            if(!JOTUtilities.isWithinFolder(f, new File(imageRoot)))
+                return;
+
+            reader = new DataInputStream(new FileInputStream(f));
 
             int i = 0;
             String s =

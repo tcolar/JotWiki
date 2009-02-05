@@ -51,11 +51,11 @@ public class PageReader
     private static final Pattern SPECIAL_PATTERN = Pattern.compile("\\@\\@([^@]*)\\@\\@");
     private static final Pattern LINK_PATTERN = Pattern.compile("\\[\\[([^|\\]]*)\\|?([^\\]]*)\\]\\]");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("[0-9a-zA-Z_.-]+\\@[0-9a-zA-Z_-]+\\.[0-9a-zA-Z_.-]+");
-    private static final Pattern rowPattern = Pattern.compile("\\s*(\\|[^\n]*)");
-    private static final Pattern tablePattern = Pattern.compile("^(\\s*\\^.*?)\n\n", PATTERN_FLAGS_MULTI);
-    private static final Pattern tableNoHeadPattern = Pattern.compile("^(\\s*\\|.*?)\n\n", PATTERN_FLAGS_MULTI);
-    private static final Pattern headerPattern = Pattern.compile("\\s*(\\^[^\n]*)");
-    private static final Pattern pHeader = Pattern.compile("(===*)([^=]*)(==+)");
+    private static final Pattern ROW_PATTERN = Pattern.compile("\\s*(\\|[^\n]*)");
+    private static final Pattern HEADER_PATTERN = Pattern.compile("(===*)([^=]*)(==+)");
+    private static final Pattern TABLE_PATTERN = Pattern.compile("^(\\s*\\^.*?)\n\n", PATTERN_FLAGS_MULTI);
+    private static final Pattern TABLE_NO_HEAD_PATTERN = Pattern.compile("^(\\s*\\|.*?)\n\n", PATTERN_FLAGS_MULTI);
+    private static final Pattern TABLE_HEADER_PATTERN = Pattern.compile("\\s*(\\^[^\n]*)");
     private static final String STRIP_VAR_HEAD = "!_JOT_STRIP_VAR_";
     private static final String STRIP_VAR_TAIL = "!";
 
@@ -73,7 +73,7 @@ public class PageReader
         PageInfos infos = new PageInfos();
         int titleDepth = 999;
         String title = pageName;
-        Matcher m = pHeader.matcher(plainPage);
+        Matcher m = HEADER_PATTERN.matcher(plainPage);
         while (m.find())
         {
             String prefix = m.group(1);
@@ -391,7 +391,7 @@ public class PageReader
     private static String doHrs(Hashtable parts, String page)
     {
         StringBuffer buf = new StringBuffer();
-        Matcher m = pHeader.matcher(page);
+        Matcher m = HEADER_PATTERN.matcher(page);
         while (m.find())
         {
             String prefix = m.group(1);
@@ -438,7 +438,7 @@ public class PageReader
             } else
             {
                 //other file attachment
-                replacement="<img src='images/files.gif'/><a href='fetchImage.do?img="+ m2.trim() +"'>"+m2.trim()+"</a>";
+                replacement="<img src='images/file.gif'/>&nbsp;<a href='fetchItem.do/"+ m2.trim() +"'>"+m2.trim()+"</a>";
             }
 
             int index = parts.size();
@@ -453,7 +453,7 @@ public class PageReader
 
     private static String getImageCode(String image, String css)
     {
-        return "<div "+css+"><img src='fetchImage.do?img=" + image + "' alt='" + image + "'/></div>";
+        return "<div "+css+"><img src='fetchItem.do/" + image + "' alt='" + image + "'/></div>";
     }
 
     private static String doLinks(Hashtable parts, String page)
@@ -649,13 +649,13 @@ public class PageReader
     public static String doTables(Hashtable parts, String page) throws Exception
     {
         // tables with headers
-        Matcher tableMatcher = tablePattern.matcher(page);
+        Matcher tableMatcher = TABLE_PATTERN.matcher(page);
         StringBuffer buf = new StringBuffer();
 
         while (tableMatcher.find())
         {
             String newTable = "<table class='table'>\n";
-            Matcher headerMatcher = headerPattern.matcher(tableMatcher.group(1));
+            Matcher headerMatcher = TABLE_HEADER_PATTERN.matcher(tableMatcher.group(1));
             if (headerMatcher.find())
             {
                 newTable += "<tr>\n";
@@ -678,7 +678,7 @@ public class PageReader
 
         //tables without headers
         buf = new StringBuffer();
-        tableMatcher = tableNoHeadPattern.matcher(page);
+        tableMatcher = TABLE_NO_HEAD_PATTERN.matcher(page);
         while (tableMatcher.find())
         {
             String newTable = "<table class='table'>\n";
@@ -697,7 +697,7 @@ public class PageReader
     public static String doTableRows(Hashtable parts, String tableContent) throws Exception
     {
         String newTable = "";
-        Matcher rowMatcher = rowPattern.matcher(tableContent);
+        Matcher rowMatcher = ROW_PATTERN.matcher(tableContent);
         while (rowMatcher.find())
         {
             newTable += "<tr>\n";

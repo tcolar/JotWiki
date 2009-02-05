@@ -320,7 +320,14 @@ public class JOTWikiFilter extends JOTMainFilter implements Filter
                 JOTUtilities.sendRedirect(res, page, false, false);
             }
             path = Constants.DEFAULT_ACTION;
-        } else
+        }
+        else if(path.indexOf("/fetchItem.do/")!=-1)
+        {
+                String item=path.substring(path.lastIndexOf("/"),path.length());
+                attributes.put("item",item);
+                path="/fetchItem.do";
+        }
+        else
         {
             String ns = "/" + namespace + "/";
             if (path.indexOf(ns) > -1 && path.endsWith(".do"))
