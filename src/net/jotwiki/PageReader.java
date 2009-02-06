@@ -314,10 +314,10 @@ public class PageReader
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
         page = strip(parts, page, codeReplacer);
 
-        /*Replacer inlineCodeReplacer = new Replacer("''", "''", "<span class='code'>", "</span>");
+        Replacer inlineCodeReplacer = new Replacer("''", "''", "<span class='code'>", "</span>");
         inlineCodeReplacer.setParseContent(false);
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
-        page = strip(parts, page, inlineCodeReplacer);*/
+        page = strip(parts, page, inlineCodeReplacer);
 
         Replacer htmlReplacer = new Replacer("<html>", "</html>");
         htmlReplacer.setEncodeContent(false);
