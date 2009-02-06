@@ -23,6 +23,7 @@ import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
+import net.jot.utils.Pair;
 import net.jot.web.util.JOTAntiSpam;
 import net.jot.web.view.JOTViewParser;
 import net.jotwiki.db.PageOptions;
@@ -307,16 +308,16 @@ public class PageReader
         // we first do the one for which the content shouldn't be parsed
 
         Replacer codeReplacer = new Replacer("<code\\s*([^> ]*)\\s*(\\|\\s*([^>]*))?>", "</code>", "<div class='code'><div class='code_title'>" + (STRIP_VAR_HEAD + 3 + STRIP_VAR_TAIL) + "</div><pre>", "</pre></div>");
-        codeReplacer.setOpenLength(Replacer.AUTOMATIC);
+        //codeReplacer.setOpenLength(Replacer.AUTOMATIC);
         codeReplacer.setParseContent(false);
         codeReplacer.setLineBreaks(false);
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
         page = strip(parts, page, codeReplacer);
 
-        Replacer inlineCodeReplacer = new Replacer("''", "''", "<span class='code'>", "</span>");
+        /*Replacer inlineCodeReplacer = new Replacer("''", "''", "<span class='code'>", "</span>");
         inlineCodeReplacer.setParseContent(false);
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
-        page = strip(parts, page, inlineCodeReplacer);
+        page = strip(parts, page, inlineCodeReplacer);*/
 
         Replacer htmlReplacer = new Replacer("<html>", "</html>");
         htmlReplacer.setEncodeContent(false);
@@ -326,7 +327,6 @@ public class PageReader
 
         //do the special ones that are more complex
         page = doLinks(parts, page);
-        
         
         // do this after doLinks
         if(WikiPreferences.getInstance().getDefaultedBoolean(WikiPreferences.GLOBAL_ENCODE_EMAIL,Boolean.TRUE).booleanValue())
@@ -345,8 +345,8 @@ public class PageReader
         Replacer subReplacer = new Replacer("<sub>", "</sub>", "<sub>", "</sub>");
         page = strip(parts, page, subReplacer);
         Replacer boldReplacer = new Replacer("\\*\\*", "\\*\\*", "<b>", "</b>");
-        boldReplacer.setOpenLength(2);
-        boldReplacer.setCloseLength(2);
+        //boldReplacer.setOpenLength(2);
+        //boldReplacer.setCloseLength(2);
         page = strip(parts, page, boldReplacer);
         Replacer underlineReplacer = new Replacer("__", "__", "<u>", "</u>");
         page = strip(parts, page, underlineReplacer);
@@ -584,16 +584,17 @@ public class PageReader
         boolean unclosed = false;
         while (!unclosed && (m = openPattern.matcher(page)).find())
         {
-            if (replacer.getOpenLength() == Replacer.AUTOMATIC)
+            /*if (replacer.getOpenLength() == Replacer.AUTOMATIC)
             {
                 replacer.setOpenLength(m.group(0).length());
-            }
+            }*/
             int start = m.start();
             // if end is empty, then we don't have to look for an end tag.
+            Pair pair=new Pair(-1,-1);
             int end = m.end();
             if (replacer.getClose().length() > 0)
-            {
-                end = JOTViewParser.findMatchingClosingTag(start + replacer.getOpenLength(), page, openPattern, closePattern, 1) - closePattern.pattern().length();
+            {   pair=JOTViewParser.findMatchingClosingTag(end, page, openPattern, closePattern, 1);
+                end = pair.getX();
             }
             if (end > start)
             {
@@ -636,11 +637,13 @@ public class PageReader
 
                 parts.put("" + index, head + content + tail);
                 //JOTLogger.log(JOTLogger.DEBUG_LEVEL, PageReader.class, "parts added:"+index+" -> "+parts.get(""+index));
-                page = page.substring(0, start) + tag + page.substring(end + replacer.getCloseLength(), page.length());
+                page = page.substring(0, start) + tag + page.substring(end + (pair.getY()-pair.getX()), page.length());
             } else
             {
-                //throw(new Exception("Could not find closing tag: "+closePattern));
                 unclosed = true;
+                String subset=page.substring(start);
+                subset=page.length()>16?subset.substring(0,16)+"...":subset;
+                throw(new Exception("Could not find closing tag for: "+closePattern+" at: "+subset));
             }
         }
         return page;

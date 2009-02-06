@@ -24,11 +24,11 @@ public class Replacer
 	String close=null;
 	String head="";
 	String tail="";
-	int openLength=0;
-	int closeLength=0;
-        int encoding=JOTHTMLUtilities.ENCODE_ALL & ~JOTHTMLUtilities.ENCODE_LINE_BREAKS;
+	//int openLength=0;
+	//int closeLength=0;
+    int encoding=JOTHTMLUtilities.ENCODE_ALL & ~JOTHTMLUtilities.ENCODE_LINE_BREAKS;
 	
-	public int getCloseLength() {
+	/*public int getCloseLength() {
 		return closeLength;
 	}
 	public void setCloseLength(int closeLength) {
@@ -39,20 +39,20 @@ public class Replacer
 	}
 	public void setOpenLength(int openLength) {
 		this.openLength = openLength;
-	}
+	}*/
 	public Replacer(String open,String close)
 	{
 		this.open=open;
 		this.close=close;
-		this.openLength=open.length();
-		this.closeLength=close.length();
+		//this.openLength=open.length();
+		//this.closeLength=close.length();
 	}
 	public Replacer(String open,String close,String head, String tail)
 	{
 		this.open=open;
 		this.close=close;
-		this.openLength=open.length();
-		this.closeLength=close.length();
+		//this.openLength=open.length();
+		//this.closeLength=close.length();
 		this.tail=tail;
 		this.head=head;		
 	}
