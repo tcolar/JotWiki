@@ -584,16 +584,13 @@ public class PageReader
         boolean unclosed = false;
         while (!unclosed && (m = openPattern.matcher(page)).find())
         {
-            /*if (replacer.getOpenLength() == Replacer.AUTOMATIC)
-            {
-                replacer.setOpenLength(m.group(0).length());
-            }*/
             int start = m.start();
             // if end is empty, then we don't have to look for an end tag.
             Pair pair=new Pair(-1,-1);
             int end = m.end();
             if (replacer.getClose().length() > 0)
-            {   pair=JOTViewParser.findMatchingClosingTag(end, page, openPattern, closePattern, 1);
+            {
+                pair=JOTViewParser.findMatchingClosingTag(end, page, openPattern, closePattern);
                 end = pair.getX();
             }
             if (end > start)
