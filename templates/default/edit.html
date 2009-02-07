@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href='template.css'/>
 <script type="text/javascript" src="template.js"></script>
 <script type="text/javascript" src="edit.js"></script>
-<script type="text/javascript">setTimers(<jot:var value="lockLength"/>);</script>
+<script type="text/javascript">setTimers(${lockLength});</script>
 </head>
 
 <body class="editPageBody">
@@ -21,7 +21,7 @@
  <table>
 <tr>
 <td align="left">
-   Editing "<jot:var value="pageName"/>"
+   Editing "${pageName}"
 </td>
 <td align="right">
    <a href="syntax.html" target="_blank">Syntax Help</a>
@@ -102,7 +102,7 @@
   <input class="button" type="submit" value="Preview"/>
   <input class="button" type="submit" value="Save & Edit"/>
   -->
-  <input class="button" type="button" value="Cancel" onClick="javascript:confirmCancel('editForm','<jot:var value="pageName"/>','<jot:var value="nameSpace"/>');"/>&nbsp;
+  <input class="button" type="button" value="Cancel" onClick="javascript:confirmCancel('editForm','${pageName}','${nameSpace}');"/>&nbsp;
   <input class="button" type="submit" value="Save Page"/>
   </td>
   </tr>

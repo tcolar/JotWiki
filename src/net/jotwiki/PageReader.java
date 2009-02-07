@@ -110,6 +110,14 @@ public class PageReader
         JOTSQLCondition cond=new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName);
         JOTSQLCondition cond2=new JOTSQLCondition(PageOptionsForm.NAMESPACE, JOTSQLCondition.IS_EQUAL, ns);
         PageOptions options = (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOne();
+        if(options==null)
+        {
+            options=new PageOptions();
+            options.setCommentsEmail(WikiPreferences.getInstance().getString(ns+"."+WikiPreferences.NS_COMMENTS_EMAIL_TO));
+            options.setCommentsEnabled(WikiPreferences.getInstance().getBoolean(ns+"."+WikiPreferences.NS_COMMENTS_ENABLED));
+            options.setCommentsGuest(WikiPreferences.getInstance().getBoolean(ns+"."+WikiPreferences.NS_COMMENTS_ALLOW_GUEST));
+            options.setCommentsNb(WikiPreferences.getInstance().getInt(ns+"."+WikiPreferences.NS_COMMENTS_HOW_MANY));
+        }
         return options;
     }
     

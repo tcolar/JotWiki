@@ -229,6 +229,7 @@ public class ShowPageView extends JOTView
         } catch (Exception e)
         {
             JOTLogger.log(JOTLogger.ERROR_LEVEL, this, "Failed to parse page options.");
+            JOTLogger.logException(this, "Failed to parse page options.", e);
         }
         if (allComments)
         {
