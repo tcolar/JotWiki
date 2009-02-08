@@ -646,9 +646,9 @@ public class PageReader
             } else
             {
                 unclosed = true;
-                String subset=page.substring(start);
-                subset=page.length()>16?subset.substring(0,16)+"...":subset;
-                throw(new Exception("Could not find closing tag for: "+closePattern+" at: "+subset));
+                //String subset=page.substring(start);
+                //subset=page.length()>16?subset.substring(0,16)+"...":subset;
+                //throw(new Exception("Could not find closing tag for: "+closePattern+" at: "+subset));
             }
         }
         return page;
