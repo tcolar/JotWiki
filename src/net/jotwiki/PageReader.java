@@ -23,7 +23,7 @@ import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
-import net.jot.utils.Pair;
+import net.jot.utils.JOTPair;
 import net.jot.web.util.JOTAntiSpam;
 import net.jot.web.view.JOTViewParser;
 import net.jotwiki.db.PageOptions;
@@ -594,7 +594,7 @@ public class PageReader
         {
             int start = m.start();
             // if end is empty, then we don't have to look for an end tag.
-            Pair pair=new Pair(-1,-1);
+            JOTPair pair=new JOTPair(-1,-1);
             int end = m.end();
             if (replacer.getClose().length() > 0)
             {
