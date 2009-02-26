@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+	  lang="en" dir="ltr">
+	<head>
+		<title>JOTWIKI: Edit Page</title>
+		<style>
+			.form_error{background-color:#ffdddd;border-color:#ff0000;color:#ff0000}
+		</style>
+		<link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+		<link rel="stylesheet" type="text/css" href='template.css'/>
+		<script type="text/javascript" src="template.js"></script>
+		<script type="text/javascript" src="edit.js"></script>
+		<script type="text/javascript">setTimers(${lockLength});</script>
+	</head>
+
+	<body class="editPageBody">
+		<form jotclass="net.jotwiki.forms.EditForm" action="submitedit.do" method="post" id="editForm">
+			<center>
+				<table>
+					<tr>
+						<td align="left">
+							Editing "${pageName}"
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<input class="button" type="button" value="Cancel" onClick="javascript:confirmCancel('editForm','${pageName}','${nameSpace}');"/>&nbsp;
+							<input class="button" type="submit" value="Save Page"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input name="pageName" type="hidden">
+							<input name="namespace" type="hidden">
+							<input name="pageMD5" type="hidden" value="N/A">
+							<textarea  name="text" class="edit" id='textEditor' cols="50" rows="25" wrap=soft>
+							</textarea>
+						</td>
+					</tr>
+				</table>
+			</center>
+			<br>
+		</form>
+	</body>
+</html>

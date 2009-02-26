@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+	  lang="en" dir="ltr">
+	<head>
+		<title><jot:var value="pageInfos.title"/> [<jot:var value="siteTitle"/>]</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JOTWIKI" />
+		<meta name="robots" content="index,follow" />
+		<meta name="date" content='<jot:var value="lastModification"/>' />
+		<meta name="keywords" content='<jot:var value="pageInfos.title"/>' />
+		<link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+		<link rel="stylesheet" type="text/css" href='template.css'/>
+		<script type="text/javascript" src="template.js"></script>
+	</head>
+
+	<body>
+		<!-- start header block -->
+		<div class="box">
+				<a class="title" href='<jot:var value="homePageLink"/>'><jot:var value="siteTitle"/></a>
+				<span  class="title_link">
+					<jot:if eval=" ! loggedUser">
+						<a href="${loginLink}">[Login]</a>
+					</jot:if>
+					<jot:if eval="loggedUser">
+						<a href="${logoutLink}">[Logout]</a>
+					</jot:if>
+					<jot:if eval="canEdit">
+						<a href="${editPageLink}">[Edit]</a>
+					</jot:if>
+				</span>
+		</div>
+
+		<!-- end header block -->
+
+
+  <!-- start content block -->
+		<div class="content">
+			<div class="box">
+
+				<!-- start wikipage block -->
+				<div class="box">
+					<div class="page">
+						<jot:var value="getPageContent()"/>
+					</div>
+				</div>
+				<!-- end wikipage block -->
+
+			</div>
+
+
+			<!-- comments -->
+			<div class="box">
+				<jot:if eval="getCommentsEnabled()">
+					<div class="commentsTitle">Comments:
+						<jot:if eval="canPostComments()">
+							<a class="button" href='addComment.do'>Add a new Comment</a>
+						</jot:if>
+					</div>
+					<hr/>
+					<jot:loop over="getComments()" as="comment">
+						<!-- comment -->
+						<div class="comment">
+							<b>Post time:</b><jot:var value="comment.time"/> By:<jot:var value="comment.author"/><br>
+							<b>Title: <jot:var value="comment.title"/></b><br/>
+							<jot:var value="comment.text"/><br>
+						</div>
+						<hr/>
+					</jot:loop>
+					<jot:if eval="getNbExtraComments()">
+						<div class="commentsTitle"><a href="?allComments=1">View <jot:var value="getNbExtraComments()"/> more comments</a></div>
+						<hr/>
+					</jot:if>
+					<!-- end comment -->
+				</jot:if>
+			</div>
+			<!-- end comments -->
+
+		</div>
+		<!-- end content block -->
+
+		<jot:if eval="GoogleUACCT">
+			<!-- Google Analytics -->
+			<script type="text/javascript">
+				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+				document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+				var pageTracker = _gat._getTracker('<jot:var value="GoogleUACCT"/>');
+				pageTracker._initData();
+				pageTracker._trackPageview();
+			</script>
+			<!-- End Google Analytics -->
+		</jot:if>
+
+	</body>
+</html>

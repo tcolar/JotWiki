@@ -1,0 +1,50 @@
+/*
+This only contains addons/ovverides to the default jotwiki.css
+*/
+
+/* pcf specific*/
+#menuButton {padding-top:8px;padding-left:10px;padding-right:10px;}
+#menuButton>a {color:#1400ab;background-color:#99bbee;text-decoration:none;padding-left:20px;padding-right:20px;min-height:10px;font-weight:bold;}
+#menuButton>a:visited{color:#1400ab;background-color:#99bbee;text-decoration:none;padding-left:20px;padding-right:20px;min-height:10px;font-weight:bold;}
+#menuButton>a:hover{color:#2511bc;background-color:#aaccff;text-decoration:none;padding-left:20px;padding-right:20px;min-height:10px;font-weight:bold;}
+
+/* jotwiki ovverides */
+body,html{font-family: "Trebuchet MS",Arial,sans-serif; font-size: 90%; color:#111111; background-color: #aaaaaa;}
+a{text-decoration: none;color: #0000bb;border-bottom-width: 1px;border-bottom-style: none;}
+a:hover{color: #0000ff;border-bottom-width: 1px;border-bottom-style: none;}
+input.edit[type="text"], input.edit[type="password"], select.edit{background-color: #eeeeee;font-size: 100%;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: #8cacbb;border-right-color: #8cacbb;border-bottom-color: #8cacbb;border-left-color: #8cacbb;min-height: 22px;color: black;vertical-align: middle;display: inline;}
+input.button{font-weight:bold;color: #111111;background-color: #aaaaaa;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: black;border-right-color: black;border-bottom-color: black;border-left-color: black;vertical-align: middle;text-decoration: none;font-size: 100%;cursor: pointer;height: 22px;max-height: 22px;min-height: 22px;display: inline;}
+textarea.edit{background-color: #eeeeee}
+#header_bar{clear: both;color: #111111;background-color: #eeeeee}
+.title_link{padding-left: 5px;color: #990000;font-size: 50%;font-weight: bold;font-style:normal}
+#header_title {font-style: italic;font-size: 120%;color: #b8b49c;padding-left: 5px;}
+
+.content{clear:both;color: #111111;background-color: #dddddd;width:100%}
+
+.box{border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: black;border-right-color: black;border-bottom-color: black;border-left-color: black;border-top-color: black;border-right-color: black;border-bottom-color: black;border-left-color: black;background-color: #dddddd;padding-right:1px;padding-left:1px;padding-bottom:1px;padding-top:1px;}
+.page{background-color: #cccccc;text-align: justify;padding-left: 3px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;}
+.comment{background-color: #cccccc;text-align: justify;padding-left: 3px;padding-right: 3px;padding-top: 3px;padding-bottom: 3px;}
+
+.fixme{background-color:#aa79a3;background-image:url(images/fixme.gif);background-repeat:no-repeat;background-position:center left;padding-left:60px;min-height:30px;}
+.deleteme{background-color:#74a3a6;background-image:url(images/delete.gif);background-repeat:no-repeat;background-position:center left;padding-left:60px;min-height:30px;}
+.warning{background-color:#f89060;background-image:url(images/warning.gif);background-repeat:no-repeat;background-position:center left;padding-left:60px;min-height:30px;}
+.note{background-color:#72a687;background-image:url(images/note.jpg);background-repeat:no-repeat;background-position:center left;padding-left:60px;min-height:30px;}
+.tip{background-color:#ecee66;background-image:url(images/tip.gif);background-repeat:no-repeat;background-position:center left;padding-left:60px;min-height:30px;}
+
+.table{background-color:#eeeeee;}
+.th{background-color:#dddddd;}
+.td{background-color:#cccccc;}
+
+.editPageBody{background-color: #cccccc;}
+.syntaxPageBody{background-color: #cccccc;}
+
+.gen_form_content_td{text-align:center;color: #111111}
+.gen_form_title{color: #111111; text-align:center;background-color: #aaaaaa;font-family: "Times New Roman","Times",serif;font-weight: bold;font-size: 140%}
+.gen_form_section{text-align:center;background-color: #aaaaaa;font-family: "Times New Roman","Times",serif;font-weight: bold;font-size: 120%; color:#111111}
+.gen_form_content{overflow-x: hidden;overflow-y: hidden;background-color: #cccccc;font-size: 100%;padding-left-value: 0.1em;padding-right-value: 0.1em;padding-top: 0.1em;padding-bottom: 0.5em;border-left-style: solid;border-bottom-style: solid;border-right-style: solid;border-top-style: solid;border-bottom-color: black;border-right-color: black;color: rgb(244, 240, 216)}
+input.gen_form_edit[type="text"], input.gen_form_edit[type="password"], select.gen_form_edit{font-size: 100%;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: #8cacbb;border-right-color: #8cacbb;border-bottom-color: #8cacbb;border-left-color: #8cacbb;min-height: 22px;color: black;vertical-align: middle;display: inline;background-color: #eeeeee;}
+input.gen_form_button{font-weight:bold;color: #111111;background-color: #aaaaaa;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: black;border-right-color: black;border-bottom-color: black;border-left-color: black;vertical-align: middle;text-decoration: none;font-size: 100%;cursor: pointer;height: 22px;max-height: 22px;min-height: 22px;display: inline;}
+
+.searchHighlight{background-color:#00ffff;font-weight:bold;}
+
+.breadcrumbs{font-size: 85%;font-weight: normal;color: rgb(50,50,255);padding-left: 5px;}
