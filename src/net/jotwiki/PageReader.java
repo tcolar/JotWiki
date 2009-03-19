@@ -24,6 +24,7 @@ import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
 import net.jot.utils.JOTPair;
+import net.jot.utils.JOTTextFileCache;
 import net.jot.web.util.JOTAntiSpam;
 import net.jot.web.view.JOTViewParser;
 import net.jotwiki.db.PageOptions;
@@ -271,18 +272,11 @@ public class PageReader
         try
         {
             File file = getPageFile(nameSpace, pageName);
-            JOTLogger.log(JOTLogger.DEBUG_LEVEL, PageReader.class, "Loading page: [" + nameSpace + "]: " + pageName + " -> " + file.getAbsolutePath());
             if (file.exists())
             {
+				page=JOTTextFileCache.getFileText(file.getAbsolutePath());
                 String fileTimestamp = new Date(file.lastModified()).toString();
                 req.setAttribute("fileTimestamp", fileTimestamp);
-                reader = new BufferedReader(new FileReader(file));
-                String s = null;
-                while ((s = reader.readLine()) != null)
-                {
-                    page += s + "\n";
-                }
-                reader.close();
             } else
             {
                 page = "This page does not exist yet.";

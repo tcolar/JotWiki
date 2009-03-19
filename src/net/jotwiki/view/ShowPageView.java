@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.Vector;
 import net.jot.JOTInitializer;
 import net.jot.logger.JOTLogger;
-import net.jot.utils.JOTConstants;
 import net.jot.utils.JOTHTMLUtilities;
 import net.jot.utils.JOTUtilities;
 import net.jot.web.JOTMainFilter;
@@ -114,6 +113,9 @@ public class ShowPageView extends JOTView
         addVariable(Constants.SESSION_TRACE, trace);
         addVariable(Constants.VERSION, Version.getVersion());
         addVariable("jotversion", JOTInitializer.VERSION);
+
+		// Do custom page options
+		//infos.getOptions().
     }
 
     public String getPageContent()

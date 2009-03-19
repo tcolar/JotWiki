@@ -12,8 +12,13 @@ import net.jotwiki.db.WikiPermission;
 
 public class PageOptionsFormView extends JOTGeneratedFormView
 {
-	public boolean validatePermissions() 
+	public void prepareViewData() throws Exception
 	{
-          return WikiPermission.hasEditPermission(request);
-        }
+		super.prepareViewData();
+	}
+
+	public boolean validatePermissions()
+	{
+		return WikiPermission.hasEditPermission(request);
+	}
 }
