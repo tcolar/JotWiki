@@ -176,11 +176,15 @@ public class PageOptionsForm extends JOTDBForm
 		HttpSession session = request.getSession();
 		String ns = (String) session.getAttribute(Constants.NAMESPACE);
 		Vector vars=findCustomTemplateVariables(ns);
-		// find all starting by WIKI_VAR_CHECKBOX_ID / WIKI_VAR_ID
-		// if exist in db remove
-		// if check box checked add to db
-
-		// To Be Continued
+		for (int i=0;i!=vars.size();i++)
+		{
+			WikiCustomVariable var=(WikiCustomVariable)vars.get(i);
+			String chk=request.getParameter(WIKI_VAR_CHECKBOX_ID+var.getName());
+			String val=request.getParameter(WIKI_VAR_ID+var.getName());
+			// TODO: continue this
+			// delete from DB
+			// add back only if checkbox ON
+		}
 
 		if (request.getParameter("returnToEdit") != null)
 		{
