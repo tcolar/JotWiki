@@ -51,7 +51,6 @@ public class ShowPageView extends JOTView
         PageInfos infos = (PageInfos) request.getAttribute(Constants.PAGE_INFOS);
         String nameSpace = (String) session.getAttribute(Constants.NAMESPACE);
 
-
         addVariable(Constants.SITE_MOTO, moto);
         addVariable(Constants.SITE_TITLE, title);
 
@@ -67,6 +66,7 @@ public class ShowPageView extends JOTView
         addVariable(Constants.PAGE_AUTHOR, author);
 
         addVariable(Constants.PAGE_NAME, pageName);
+		addVariable(Constants.NAMESPACE, nameSpace);
         addVariable(Constants.EDIT_PAGE_LINK, "edit.do?page=" + pageName + "&ns=" + nameSpace);
         addVariable(Constants.OPTIONS_LINK, "options.do?page=" + pageName + "&ns=" + nameSpace);
         addVariable(Constants.LOGIN_LINK, "login.do");

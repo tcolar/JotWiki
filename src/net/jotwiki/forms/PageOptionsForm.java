@@ -60,14 +60,15 @@ public class PageOptionsForm extends JOTDBForm
 	public static final String COMMENTS_GUEST = "commentsGuest";
 	public static final String COMMENTS_EMAIL = "commentsEmail";
 	public static final Pattern WIKI_VAR_PATTERN = Pattern.compile("(<wiki:var\\s+name=\"([^\"]+)\"\\s*>)", JOTViewParser.PATTERN_FLAGS);
-	protected static final Pattern OPEN_VAR_PATTERN = Pattern.compile("<wiki:var\\s+name=\"[^\"]+\"\\s*>", JOTViewParser.PATTERN_FLAGS);
-	protected static final String CLOSE_VAR_STRING = "</wiki:var>";
-	protected static final Pattern CLOSE_VAR_PATTERN = Pattern.compile(CLOSE_VAR_STRING, JOTViewParser.PATTERN_FLAGS);
-	public static final String WIKI_VAR_ID="__WV_";
-	public static final String WIKI_VAR_CHECKBOX_ID="__WVC_";
+	public static final Pattern OPEN_VAR_PATTERN = Pattern.compile("<wiki:var\\s+name=\"[^\"]+\"\\s*>", JOTViewParser.PATTERN_FLAGS);
+	public static final String CLOSE_VAR_STRING = "</wiki:var>";
+	public static final Pattern CLOSE_VAR_PATTERN = Pattern.compile(CLOSE_VAR_STRING, JOTViewParser.PATTERN_FLAGS);
+	public static final String WIKI_VAR_ID = "__WV_";
+	public static final String WIKI_VAR_CHECKBOX_ID = "__WVC_";
 	//private String currentPage=null;
 	//private String currentNs=null;
 	//override
+
 	protected String getDescription(JOTFormField field, int spanCpt)
 	{
 		return WikiUtilities.getCustomFormDescription(field, spanCpt);
@@ -139,19 +140,19 @@ public class PageOptionsForm extends JOTDBForm
 		addFormField(new JOTFormTextField(BLOG_RSS_TITLE, "Blog RSS Title", 20, ""));
 
 		// Page customizable tags (<wiki:var name="keywords"></wiki:var>)
-		String help="Check this box to use custom value entered in following field instead of default value.";
-		String help2="Replace a template placeholder in the template with data<br>Ex: in the template <b>&lt;wiki:var name=\"keywords\">default keyword&lt;/wiki:var></b><br/>and here we could Enter:<br/><i>Cheap Stuff</i><br/>or:<br/><i>&lt;jot:include file=\"kw_page\">&lt;/jot:include></i><br/>To include the wiki page 'kw_page'";
+		String help = "Check this box to use custom value entered in following field instead of default value.";
+		String help2 = "Replace a template placeholder in the template with data<br>Ex: in the template <b>&lt;wiki:var name=\"keywords\">default keyword&lt;/wiki:var></b><br/>and here we could Enter:<br/><i>Cheap Stuff</i><br/>or:<br/><i>&lt;jot:include file=\"kw_page\">&lt;/jot:include></i><br/>To include the wiki page 'kw_page'";
 
-		Vector vars=findCustomTemplateVariables(ns);
+		Vector vars = findCustomTemplateVariables(ns);
 
 		addCategory(new JOTFormCategory("Custom Template Variables"));
-		for (int i=0;i!=vars.size();i++)
+		for (int i = 0; i != vars.size(); i++)
 		{
-			WikiCustomVariable var=(WikiCustomVariable)vars.get(i);
-			JOTFormCheckboxField chk = new JOTFormCheckboxField(WIKI_VAR_CHECKBOX_ID+var.getName(), "Use custom for "+var.getName(), ! var.isDefaulted());
+			WikiCustomVariable var = (WikiCustomVariable) vars.get(i);
+			JOTFormCheckboxField chk = new JOTFormCheckboxField(WIKI_VAR_CHECKBOX_ID + var.getName(), "Use custom for " + var.getName(), !var.isDefaulted());
 			chk.setHelp(help);
 			addFormField(chk);
-			JOTFormTextareaField text = new JOTFormTextareaField(WIKI_VAR_ID+var.getName(), var.getName(), 30, 3, var.getValue());
+			JOTFormTextareaField text = new JOTFormTextareaField(WIKI_VAR_ID + var.getName(), var.getName(), 30, 3, var.getValue());
 			text.setHelp(help2);
 			addFormField(text);
 		}
@@ -175,15 +176,38 @@ public class PageOptionsForm extends JOTDBForm
 		// custom vars
 		HttpSession session = request.getSession();
 		String ns = (String) session.getAttribute(Constants.NAMESPACE);
-		Vector vars=findCustomTemplateVariables(ns);
-		for (int i=0;i!=vars.size();i++)
+		String page = (String) session.getAttribute(Constants.PAGE_NAME);
+		Vector vars = findCustomTemplateVariables(ns);
+		JOTSQLCondition cond = new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
+		JOTSQLCondition cond2 = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, page);
+		JOTQueryBuilder.deleteQuery(PageVariable.class).where(cond).where(cond2).delete();
+
+		for (int i = 0; i != vars.size(); i++)
 		{
-			WikiCustomVariable var=(WikiCustomVariable)vars.get(i);
-			String chk=request.getParameter(WIKI_VAR_CHECKBOX_ID+var.getName());
-			String val=request.getParameter(WIKI_VAR_ID+var.getName());
-			// TODO: continue this
-			// delete from DB
-			// add back only if checkbox ON
+			WikiCustomVariable var = (WikiCustomVariable) vars.get(i);
+			JOTSQLCondition cond3 = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, var.getName());
+			String chk = request.getParameter(WIKI_VAR_CHECKBOX_ID + var.getName());
+			String val = request.getParameter(WIKI_VAR_ID + var.getName());
+
+			if (chk != null)
+			{
+				PageVariable pageVar = (PageVariable)JOTQueryBuilder.selectQuery(PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
+				if (chk.toLowerCase().equals("on") || chk.toLowerCase().equals("selected"))
+				{
+					if(pageVar==null)
+						pageVar=new PageVariable();
+					pageVar.setName(var.getName());
+					pageVar.setNameSpace(ns);
+					pageVar.setPage(page);
+					pageVar.setValue(val);
+					pageVar.save();
+				}
+				else
+				{
+					if(pageVar!=null)
+						pageVar.delete();
+				}
+			}
 		}
 
 		if (request.getParameter("returnToEdit") != null)
@@ -246,21 +270,20 @@ public class PageOptionsForm extends JOTDBForm
 			if (index != -1)
 			{
 				String value = template.substring(m.end(), pair.getX());
-				JOTSQLCondition cond1=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
-				JOTSQLCondition cond2=new JOTSQLCondition("namespace", JOTSQLCondition.IS_EQUAL, ns);
-				JOTSQLCondition cond3=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
-				PageVariable pages=null;
-				boolean defaulted=true;
+				JOTSQLCondition cond1 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
+				JOTSQLCondition cond2 = new JOTSQLCondition("namespace", JOTSQLCondition.IS_EQUAL, ns);
+				JOTSQLCondition cond3 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
+				PageVariable pages = null;
+				boolean defaulted = true;
 				try
 				{
-					PageVariable var=(PageVariable)JOTQueryBuilder.selectQuery(PageVariable.class).where(cond1).where(cond2).where(cond3).findOne();
-					if(var!=null)
+					PageVariable var = (PageVariable) JOTQueryBuilder.selectQuery(PageVariable.class).where(cond1).where(cond2).where(cond3).findOne();
+					if (var != null)
 					{
-						value=var.getValue();
-						defaulted=false;
+						value = var.getValue();
+						defaulted = false;
 					}
-				}
-				catch(Exception e)
+				} catch (Exception e)
 				{
 					JOTLogger.logException(this, "Failed to load template: " + f.getAbsolutePath(), e);
 				}
@@ -273,15 +296,16 @@ public class PageOptionsForm extends JOTDBForm
 	// represent a found custom variable in template
 	class WikiCustomVariable
 	{
-		String name="";
-		String value="";
-		boolean defaulted=true;
+
+		String name = "";
+		String value = "";
+		boolean defaulted = true;
 
 		public WikiCustomVariable(String name, String value, boolean defaulted)
 		{
-			this.defaulted=defaulted;
-			this.name=name;
-			this.value=value;
+			this.defaulted = defaulted;
+			this.name = name;
+			this.value = value;
 		}
 
 		public boolean isDefaulted()
@@ -298,6 +322,5 @@ public class PageOptionsForm extends JOTDBForm
 		{
 			return value;
 		}
-		
 	}
 }
