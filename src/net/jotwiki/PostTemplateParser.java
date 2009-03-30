@@ -17,6 +17,8 @@ import net.jotwiki.forms.PageOptionsForm;
 
 /**
  * Deal with custom parse tags (Ex: wiki:var)
+ *
+ * TODO:  cache those until changed in PageOptionsForm for speed
  * @author thibautc
  */
 public class PostTemplateParser implements JOTViewParserInterface
@@ -27,7 +29,6 @@ public class PostTemplateParser implements JOTViewParserInterface
 		Matcher m = null;
 		while ((m = PageOptionsForm.WIKI_VAR_PATTERN.matcher(template)).find())
 		{
-			StringBuffer buf = new StringBuffer();
 			String jotId = m.group(1);
 			jotId = jotId.trim();
 			JOTPair pair = JOTViewParser.findMatchingClosingTag(m.end(), template, PageOptionsForm.OPEN_VAR_PATTERN, PageOptionsForm.CLOSE_VAR_PATTERN);
@@ -43,11 +44,12 @@ public class PostTemplateParser implements JOTViewParserInterface
 
 			if (var == null)
 			{
-				// keeping tag content only
-				template = template.substring(0, m.end()) + template.substring(pair.getY());
+				// keeping tag content
+				template = template.substring(0, m.start()) +template.substring(m.end(),pair.getX()) + template.substring(pair.getY());
 			} else
 			{
-				template = template.substring(0, m.end()) + var.getValue() + template.substring(pair.getY());
+				// replacing tag by new value
+				template = template.substring(0, m.start()) + var.getValue() + template.substring(pair.getY());
 			}
 		}//end while
 
