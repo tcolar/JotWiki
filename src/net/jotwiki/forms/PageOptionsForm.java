@@ -143,7 +143,7 @@ public class PageOptionsForm extends JOTDBForm
 		String help = "Check this box to use custom value entered in following field instead of default value.";
 		String help2 = "Replace a template placeholder in the template with data<br>Ex: in the template <b>&lt;wiki:var name=\"keywords\">default keyword&lt;/wiki:var></b><br/>and here we could Enter:<br/><i>Cheap Stuff</i><br/>or:<br/><i>&lt;jot:include file=\"kw_page\">&lt;/jot:include></i><br/>To include the wiki page 'kw_page'";
 
-		Vector vars = findCustomTemplateVariables(ns);
+		Vector vars = findCustomTemplateVariables(ns, page);
 
 		addCategory(new JOTFormCategory("Custom Template Variables"));
 		for (int i = 0; i != vars.size(); i++)
@@ -176,11 +176,10 @@ public class PageOptionsForm extends JOTDBForm
 		// custom vars
 		HttpSession session = request.getSession();
 		String ns = (String) session.getAttribute(Constants.NAMESPACE);
-		String page = (String) session.getAttribute(Constants.PAGE_NAME);
-		Vector vars = findCustomTemplateVariables(ns);
+		String page = request.getParameter(Constants.PAGE_NAME);
+		Vector vars = findCustomTemplateVariables(ns, page);
 		JOTSQLCondition cond = new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
 		JOTSQLCondition cond2 = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, page);
-		JOTQueryBuilder.deleteQuery(PageVariable.class).where(cond).where(cond2).delete();
 
 		for (int i = 0; i != vars.size(); i++)
 		{
@@ -237,7 +236,7 @@ public class PageOptionsForm extends JOTDBForm
 	 * @param ns
 	 * @return
 	 */
-	private Vector findCustomTemplateVariables(String ns)
+	private Vector findCustomTemplateVariables(String ns, String page)
 	{
 		Vector variables = new Vector();
 		// find special "custom" variables in the template.
@@ -271,8 +270,8 @@ public class PageOptionsForm extends JOTDBForm
 			{
 				String value = template.substring(m.end(), pair.getX());
 				JOTSQLCondition cond1 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
-				JOTSQLCondition cond2 = new JOTSQLCondition("namespace", JOTSQLCondition.IS_EQUAL, ns);
-				JOTSQLCondition cond3 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, name);
+				JOTSQLCondition cond2 = new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
+				JOTSQLCondition cond3 = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, page);
 				PageVariable pages = null;
 				boolean defaulted = true;
 				try
