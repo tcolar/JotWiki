@@ -37,6 +37,8 @@ import net.jot.web.JOTFlowManager;
 import net.jot.web.JOTFlowRequest;
 import net.jot.web.JOTMainFilter;
 import net.jot.web.JOTRewrittenRequest;
+import net.jot.web.view.JOTViewParser;
+import net.jot.web.view.JOTViewParserInterface;
 import net.jotwiki.db.WikiUser;
 import net.jotwiki.forms.LoginForm;
 
@@ -146,6 +148,11 @@ public class JOTWikiFilter extends JOTMainFilter implements Filter
             //Starting the scheduler
             JOTScheduler.getInstance().start();
         }
+
+		// setting postprocessor for templates
+		JOTViewParserInterface postProcessor=new PostTemplateParser();
+		JOTViewParser.setPostProcessor(postProcessor);
+
         JOTLogger.log(JOTLogger.DEBUG_LEVEL, this, "Init Completed");
     }
 

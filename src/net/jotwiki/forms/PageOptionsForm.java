@@ -152,7 +152,7 @@ public class PageOptionsForm extends JOTDBForm
 			JOTFormCheckboxField chk = new JOTFormCheckboxField(WIKI_VAR_CHECKBOX_ID + var.getName(), "Use custom for " + var.getName(), !var.isDefaulted());
 			chk.setHelp(help);
 			addFormField(chk);
-			JOTFormTextareaField text = new JOTFormTextareaField(WIKI_VAR_ID + var.getName(), var.getName(), 30, 3, var.getValue());
+			JOTFormTextareaField text = new JOTFormTextareaField(WIKI_VAR_ID + var.getName(), var.getName(), 60, 3, var.getValue());
 			text.setHelp(help2);
 			addFormField(text);
 		}
@@ -184,27 +184,27 @@ public class PageOptionsForm extends JOTDBForm
 		for (int i = 0; i != vars.size(); i++)
 		{
 			WikiCustomVariable var = (WikiCustomVariable) vars.get(i);
-			JOTSQLCondition cond3 = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, var.getName());
+			JOTSQLCondition cond3 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, var.getName());
 			String chk = request.getParameter(WIKI_VAR_CHECKBOX_ID + var.getName());
 			String val = request.getParameter(WIKI_VAR_ID + var.getName());
 
-			if (chk != null)
+			PageVariable pageVar = (PageVariable) JOTQueryBuilder.selectQuery(PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
+			if (chk != null && (chk.toLowerCase().equals("on") || chk.toLowerCase().equals("selected")))
 			{
-				PageVariable pageVar = (PageVariable)JOTQueryBuilder.selectQuery(PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
-				if (chk.toLowerCase().equals("on") || chk.toLowerCase().equals("selected"))
+				if (pageVar == null)
 				{
-					if(pageVar==null)
-						pageVar=new PageVariable();
-					pageVar.setName(var.getName());
-					pageVar.setNameSpace(ns);
-					pageVar.setPage(page);
-					pageVar.setValue(val);
-					pageVar.save();
+					pageVar = new PageVariable();
 				}
-				else
+				pageVar.setName(var.getName());
+				pageVar.setNameSpace(ns);
+				pageVar.setPage(page);
+				pageVar.setValue(val);
+				pageVar.save();
+			} else
+			{
+				if (pageVar != null)
 				{
-					if(pageVar!=null)
-						pageVar.delete();
+					pageVar.delete();
 				}
 			}
 		}

@@ -29,7 +29,7 @@ public class PostTemplateParser implements JOTViewParserInterface
 		Matcher m = null;
 		while ((m = PageOptionsForm.WIKI_VAR_PATTERN.matcher(template)).find())
 		{
-			String jotId = m.group(1);
+			String jotId = m.group(2);
 			jotId = jotId.trim();
 			JOTPair pair = JOTViewParser.findMatchingClosingTag(m.end(), template, PageOptionsForm.OPEN_VAR_PATTERN, PageOptionsForm.CLOSE_VAR_PATTERN);
 
