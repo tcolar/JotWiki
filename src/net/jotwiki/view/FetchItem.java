@@ -27,94 +27,92 @@ import net.jotwiki.db.WikiPermission;
 public class FetchItem extends JOTView
 {
 
-    public void prepareViewData() throws Exception
-    {
-        String item=request.getParameter("item");
-        if (item != null && PageReader.isImage(item))
-        {
-            // image
-            {
-                writeContentType(item.toLowerCase());
-            }
-            if (item != null)
-            {
-                writeImageFromFile(item);
-            }
-        } else
-        {
-            // file
-            writeImageFromFile(item);
-        }
+	public void prepareViewData() throws Exception
+	{
+		String item = request.getParameter("item");
+		if (item != null && PageReader.isImage(item))
+		{
+			writeContentType(item.toLowerCase());
+			if (item != null)
+			{
+				writeImageFromFile(item);
+			}
+		} else
+		{
+			// file
+			writeImageFromFile(item);
+		}
 
-        response.flushBuffer();
-    // we are done.
-    }
+		response.flushBuffer();
+	// we are done.
+	}
 
-    private void writeContentType(String image)
-    {
-        image=image.toLowerCase();
-        String type = "image/jpeg";
-        if (image.endsWith(".gif"))
-        {
-            type = "image/gif";
-        }
-        if (image.endsWith(".png"))
-        {
-            type = "image/png";
-        }
-        if (image.endsWith(".bmp"))
-        {
-            type = "image/bmp";
-        }
-        response.setContentType(type);
-    }
+	private void writeContentType(String image)
+	{
+		image = image.toLowerCase();
+		String type = "image/jpeg";
+		if (image.endsWith(".gif"))
+		{
+			type = "image/gif";
+		}
+		if (image.endsWith(".png"))
+		{
+			type = "image/png";
+		}
+		if (image.endsWith(".bmp"))
+		{
+			type = "image/bmp";
+		}
+		response.setContentType(type);
+	}
 
-    public void writeImageFromFile(String image) throws Exception
-    {
-        byte[] cbuf = new byte[50000];
-        DataInputStream reader =
-                null;
-        String page =
-                "";
-        try
-        {
-            String nameSpace = WikiUtilities.getNamespace(request);
-            String imageRoot =
-                    WikiPreferences.getInstance().getFilesFolder(nameSpace);
-            //JOTLogger.log(JOTLogger.CAT_FLOW,JOTLogger.DEBUG_LEVEL, JOTViewParser.class, "Caching template: "+templatePath);
-            File f=new File(imageRoot, image);
+	public void writeImageFromFile(String image) throws Exception
+	{
+		byte[] cbuf = new byte[50000];
+		DataInputStream reader =
+				null;
+		String page = "";
+		try
+		{
+			String nameSpace = WikiUtilities.getNamespace(request);
+			String imageRoot =
+					WikiPreferences.getInstance().getFilesFolder(nameSpace);
+			//JOTLogger.log(JOTLogger.CAT_FLOW,JOTLogger.DEBUG_LEVEL, JOTViewParser.class, "Caching template: "+templatePath);
+			File f = new File(imageRoot, image);
 
-            // security check
-            if(!JOTUtilities.isWithinFolder(f, new File(imageRoot)))
-                return;
+			// security check
+			if (!JOTUtilities.isWithinFolder(f, new File(imageRoot)))
+			{
+				return;
+			}
 
-            reader = new DataInputStream(new FileInputStream(f));
+			reader = new DataInputStream(new FileInputStream(f));
 
-            int i = 0;
-            String s =
-                    null;
-            int totalSize = 0;
-            while ((i = reader.read(cbuf)) != -1)
-            {
-                totalSize += i;
-                response.getOutputStream().write(cbuf, 0, i);
-            }
+			int i = 0;
+			String s =
+					null;
+			int totalSize = 0;
+			while ((i = reader.read(cbuf)) != -1)
+			{
+				totalSize += i;
+				response.getOutputStream().write(cbuf, 0, i);
+			}
 
-            response.setContentLength(totalSize);
-            reader.close();
-        } catch (Exception e)
-        {
-            if (reader != null)
-            {
-                reader.close();
-            }
-            JOTLogger.log(JOTLogger.INFO_LEVEL, this, "Image not found for:" + image);
-        }
+			response.setContentLength(totalSize);
+			reader.close();
+		} catch (Exception e)
+		{
+			if (reader != null)
+			{
+				reader.close();
+			}
+			JOTLogger.log(JOTLogger.INFO_LEVEL, this, "Image not found for:" + image);
+		}
 
-    }
+	}
 
-    public boolean validatePermissions()
-    {
-        return WikiPermission.hasPermission(request, WikiPermission.VIEW_PAGE);
-    }
+	public boolean validatePermissions()
+	{
+		return WikiPermission.hasPermission(request, WikiPermission.VIEW_PAGE);
+	}
 }

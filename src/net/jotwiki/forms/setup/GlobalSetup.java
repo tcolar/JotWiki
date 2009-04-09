@@ -25,7 +25,6 @@ import net.jotwiki.JOTWikiFilter;
 import net.jotwiki.WikiPreferences;
 import net.jotwiki.WikiUtilities;
 import net.jotwiki.db.WikiPermission;
-import net.jotwiki.db.WikiPermission;
 import net.jotwiki.db.WikiUser;
 public class GlobalSetup extends JOTGeneratedForm
 {
