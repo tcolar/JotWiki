@@ -92,6 +92,7 @@ a.tooltip:hover span{display:block;position:absolute; top:1.5em;left:0em;width:1
 .editPageBody{background-color: rgb(18, 52, 86);}
 .syntaxPageBody{background-color: rgb(18, 52, 86);}
 
+.gen_form_th{text-align:center;font-weight:bold;background-color:#336633}"
 .gen_form_content_td{text-align:center}.gen_form_title{text-align:center;background-color: rgb(18, 52, 86);font-family: "Times New Roman","Times",serif;font-weight: bold;font-size: 140%}
 .gen_form_section{text-align:center;background-color: rgb(68, 102, 136);font-family: "Times New Roman","Times",serif;font-weight: bold;font-size: 120%}
 .gen_form_content{overflow-x: hidden;overflow-y: hidden;background-color: rgb(52, 81, 120);font-size: 100%;padding-left-value: 0.1em;padding-right-value: 0.1em;padding-top: 0.1em;padding-bottom: 0.5em;border-left-style: solid;border-bottom-style: solid;border-right-style: solid;border-top-style: solid;border-bottom-color: black;border-right-color: black;color: rgb(244, 240, 216)}

@@ -20,7 +20,6 @@ import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
 import net.jot.web.JOTFlowRequest;
 import net.jot.utils.JOTTextFileCache;
-import net.jot.web.forms.JOTDBForm;
 import net.jot.web.forms.ui.JOTFormCategory;
 import net.jot.web.forms.ui.JOTFormCheckboxField;
 import net.jot.web.forms.ui.JOTFormField;
@@ -38,13 +37,14 @@ import net.jotwiki.db.PageOptions;
 import net.jotwiki.db.WikiPermission;
 import net.jotwiki.db.WikiUser;
 import net.jot.utils.JOTPair;
+import net.jot.web.forms.JOTDBItemForm;
 import net.jotwiki.db.PageVariable;
 
 /**
  * Form for a wiki page options
  * @author tcolar
  */
-public class PageOptionsForm extends JOTDBForm
+public class PageOptionsForm extends JOTDBItemForm
 {
 
 	public static final String NAMESPACE = "nameSpace";

@@ -14,9 +14,8 @@ import java.util.Vector;
 import net.jot.logger.JOTLogger;
 import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
-import net.jot.persistance.query.JOTQueryManager;
 import net.jot.web.JOTFlowRequest;
-import net.jot.web.forms.JOTDBForm;
+import net.jot.web.forms.JOTDBItemForm;
 import net.jot.web.forms.ui.JOTFormCategory;
 import net.jot.web.forms.ui.JOTFormField;
 import net.jot.web.forms.ui.JOTFormPasswordField;
@@ -34,7 +33,7 @@ import net.jotwiki.db.WikiUser;
  * For editing / creating users
  * @author thibautc
  */
-public class UserForm extends JOTDBForm
+public class UserForm extends JOTDBItemForm
 {
 
     private final static String LOGIN = "login";
