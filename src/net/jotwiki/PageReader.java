@@ -7,10 +7,10 @@ Licence at http://www.jotwiki.net
  */
 package net.jotwiki;
 
+import net.jot.web.view.JOTPatternReplacer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
@@ -53,6 +53,7 @@ public class PageReader
     private static final Pattern SPECIAL_PATTERN = Pattern.compile("\\@\\@([^@]*)\\@\\@");
     private static final Pattern LINK_PATTERN = Pattern.compile("\\[\\[([^|\\]]*)\\|?([^\\]]*)\\]\\]");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("[0-9a-zA-Z_.-]+\\@[0-9a-zA-Z_-]+\\.[0-9a-zA-Z_.-]+");
+    private static final Pattern STYLE_PATTERN = Pattern.compile("\\%\\%(\\S+)(.*?)\\%\\%",PATTERN_FLAGS_MULTI);
     private static final Pattern ROW_PATTERN = Pattern.compile("\\s*(\\|[^\n]*)");
     private static final Pattern HEADER_PATTERN = Pattern.compile("(===*)([^=]*)(==+)");
     private static final Pattern TABLE_PATTERN = Pattern.compile("^(\\s*\\^.*?)\n\n", PATTERN_FLAGS_MULTI);
@@ -309,19 +310,18 @@ public class PageReader
         // replacing stuffs
         // we first do the one for which the content shouldn't be parsed
 
-        Replacer codeReplacer = new Replacer("<code\\s*([^> ]*)\\s*(\\|\\s*([^>]*))?>", "</code>", "<div class='code'><div class='code_title'>" + (STRIP_VAR_HEAD + 3 + STRIP_VAR_TAIL) + "</div><pre>", "</pre></div>");
-        //codeReplacer.setOpenLength(Replacer.AUTOMATIC);
+        JOTPatternReplacer codeReplacer = new JOTPatternReplacer("<code\\s*([^> ]*)\\s*(\\|\\s*([^>]*))?>", "</code>", "<div class='code'><div class='code_title'>" + (STRIP_VAR_HEAD + 3 + STRIP_VAR_TAIL) + "</div><pre>", "</pre></div>");
         codeReplacer.setParseContent(false);
         codeReplacer.setLineBreaks(false);
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
         page = strip(parts, page, codeReplacer);
 
-        Replacer inlineCodeReplacer = new Replacer("''", "''", "<span class='code'>", "</span>");
+        JOTPatternReplacer inlineCodeReplacer = new JOTPatternReplacer("''", "''", "<span class='code'>", "</span>");
         inlineCodeReplacer.setParseContent(false);
         codeReplacer.setEncoding(JOTHTMLUtilities.ENCODE_HTML_CHARS);
         page = strip(parts, page, inlineCodeReplacer);
 
-        Replacer htmlReplacer = new Replacer("<html>", "</html>");
+        JOTPatternReplacer htmlReplacer = new JOTPatternReplacer("<html>", "</html>");
         htmlReplacer.setEncodeContent(false);
         htmlReplacer.setParseContent(false);
         htmlReplacer.setLineBreaks(false);
@@ -339,52 +339,55 @@ public class PageReader
         page = doImages(parts, page);
 
         page = doSpecial(parts, page);
+
+        JOTPatternReplacer styleReplacer = new JOTPatternReplacer("\\%\\%(\\S+)", "\\%\\%", "<span class='"+(STRIP_VAR_HEAD + 1 + STRIP_VAR_TAIL)+"'>","</span>");
+        page = strip(parts, page, styleReplacer);
         
-        Replacer italicReplacer = new Replacer("//", "//", "<i>", "</i>");
+        JOTPatternReplacer italicReplacer = new JOTPatternReplacer("//", "//", "<i>", "</i>");
         page = strip(parts, page, italicReplacer);
-        Replacer delReplacer = new Replacer("<del>", "</del>", "<del>", "</del>");
+        JOTPatternReplacer delReplacer = new JOTPatternReplacer("<del>", "</del>", "<del>", "</del>");
         page = strip(parts, page, delReplacer);
-        Replacer subReplacer = new Replacer("<sub>", "</sub>", "<sub>", "</sub>");
+        JOTPatternReplacer subReplacer = new JOTPatternReplacer("<sub>", "</sub>", "<sub>", "</sub>");
         page = strip(parts, page, subReplacer);
-        Replacer boldReplacer = new Replacer("\\*\\*", "\\*\\*", "<b>", "</b>");
+        JOTPatternReplacer boldReplacer = new JOTPatternReplacer("\\*\\*", "\\*\\*", "<b>", "</b>");
         //boldReplacer.setOpenLength(2);
         //boldReplacer.setCloseLength(2);
         page = strip(parts, page, boldReplacer);
-        Replacer underlineReplacer = new Replacer("__", "__", "<u>", "</u>");
+        JOTPatternReplacer underlineReplacer = new JOTPatternReplacer("__", "__", "<u>", "</u>");
         page = strip(parts, page, underlineReplacer);
-        Replacer hrReplacer = new Replacer("----+\n", "", "<hr/>", "");
+        JOTPatternReplacer hrReplacer = new JOTPatternReplacer("----+\n", "", "<hr/>", "");
         hrReplacer.setRemoveContent(true);
         page = strip(parts, page, hrReplacer);
-        Replacer fixmeReplacer = new Replacer("^FIXME:", "\n\n", "<div class='box'><div class='fixme'>", "</div></div>\n");
+        JOTPatternReplacer fixmeReplacer = new JOTPatternReplacer("^FIXME:", "\n\n", "<div class='box'><div class='fixme'>", "</div></div>\n");
         page = strip(parts, page, fixmeReplacer);
-        Replacer warningReplacer = new Replacer("^WARNING:", "\n\n", "<div class='box'><div class='warning'>", "</div></div>\n");
+        JOTPatternReplacer warningReplacer = new JOTPatternReplacer("^WARNING:", "\n\n", "<div class='box'><div class='warning'>", "</div></div>\n");
         page = strip(parts, page, warningReplacer);
-        Replacer tipReplacer = new Replacer("^TIP:", "\n\n", "<div class='box'><div class='tip'>", "</div></div>\n");
+        JOTPatternReplacer tipReplacer = new JOTPatternReplacer("^TIP:", "\n\n", "<div class='box'><div class='tip'>", "</div></div>\n");
         page = strip(parts, page, tipReplacer);
-        Replacer noteReplacer = new Replacer("^NOTE:", "\n\n", "<div class='box'><div class='note'>", "</div></div>\n");
+        JOTPatternReplacer noteReplacer = new JOTPatternReplacer("^NOTE:", "\n\n", "<div class='box'><div class='note'>", "</div></div>\n");
         page = strip(parts, page, noteReplacer);
-        Replacer deletemeReplacer = new Replacer("^DELETEME:", "\n\n", "<div class='box'><div class='deleteme'>", "</div></div>\n");
+        JOTPatternReplacer deletemeReplacer = new JOTPatternReplacer("^DELETEME:", "\n\n", "<div class='box'><div class='deleteme'>", "</div></div>\n");
         page = strip(parts, page, deletemeReplacer);
-        Replacer bulletReplacer = new Replacer("  \\*", "\n", "<ul><li>", "</li></ul>\n");
+        JOTPatternReplacer bulletReplacer = new JOTPatternReplacer("  \\*", "\n", "<ul><li>", "</li></ul>\n");
         page = strip(parts, page, bulletReplacer);
-        Replacer listReplacer = new Replacer("  -", "\n", "<ul><li>", "</li></ul>\n");
+        JOTPatternReplacer listReplacer = new JOTPatternReplacer("  -", "\n", "<ul><li>", "</li></ul>\n");
         page = strip(parts, page, listReplacer);
         page = doHrs(parts, page);
 
         //smileys
         String context = "";
-        Replacer smileReplacer = new Replacer(":-\\)", "", "<img src='" + context + "images/smileys/smile.gif' alt='smile'/>", "");
+        JOTPatternReplacer smileReplacer = new JOTPatternReplacer(":-\\)", "", "<img src='" + context + "images/smileys/smile.gif' alt='smile'/>", "");
         page = strip(parts, page, smileReplacer);
-        Replacer winkReplacer = new Replacer(";-\\)", "", "<img src='" + context + "images/smileys/wink.gif' alt='wink'/>", "");
+        JOTPatternReplacer winkReplacer = new JOTPatternReplacer(";-\\)", "", "<img src='" + context + "images/smileys/wink.gif' alt='wink'/>", "");
         page = strip(parts, page, winkReplacer);
-        Replacer lolReplacer = new Replacer(":-D", "", "<img src='" + context + "images/smileys/lol.gif' alt='LOL'/>", "");
+        JOTPatternReplacer lolReplacer = new JOTPatternReplacer(":-D", "", "<img src='" + context + "images/smileys/lol.gif' alt='LOL'/>", "");
         page = strip(parts, page, lolReplacer);
-        Replacer tongueReplacer = new Replacer(":-P", "", "<img src='" + context + "images/smileys/tongue.gif' alt='tongueOut'/>", "");
+        JOTPatternReplacer tongueReplacer = new JOTPatternReplacer(":-P", "", "<img src='" + context + "images/smileys/tongue.gif' alt='tongueOut'/>", "");
         page = strip(parts, page, tongueReplacer);
-        Replacer frownReplacer = new Replacer(":-\\(", "", "<img src='" + context + "images/smileys/frown.gif' alt='frown'/>", "");
+        JOTPatternReplacer frownReplacer = new JOTPatternReplacer(":-\\(", "", "<img src='" + context + "images/smileys/frown.gif' alt='frown'/>", "");
         page = strip(parts, page, frownReplacer);
 
-        Replacer breaksReplacer = new Replacer("\\\\\\\\$", "", "", "");
+        JOTPatternReplacer breaksReplacer = new JOTPatternReplacer("\\\\\\\\$", "", "", "");
         page = strip(parts, page, breaksReplacer);
 
         return page;
@@ -578,7 +581,7 @@ public class PageReader
      * @return
      * @throws java.lang.Exception
      */
-    public static String strip(Hashtable parts, String page, Replacer replacer) throws Exception
+    public static String strip(Hashtable parts, String page, JOTPatternReplacer replacer) throws Exception
     {
         Pattern openPattern = Pattern.compile(replacer.getOpen(), PATTERN_FLAGS_MULTI);
         Pattern closePattern = Pattern.compile(replacer.getClose(), PATTERN_FLAGS_MULTI);
