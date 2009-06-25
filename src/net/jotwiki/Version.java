@@ -21,7 +21,7 @@ import net.jot.utils.JOTUtilities;
  */
 public class Version 
 {
-	public static final String STAMP="04/27/2009 11:47";
+	public static final String STAMP="06/25/2009 08:39";
 	
 	public static final String VERSION="0.1.6";
 
