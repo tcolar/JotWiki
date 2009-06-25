@@ -58,7 +58,7 @@
 					<jot:loop over="trace" as="traceEntry">
 						<span class="bcsep">&raquo;</span> <span class="curid"><a href='<jot:var value="getTraceLink(traceEntry)"/>' class="breadcrumbs"><jot:var value="getTraceName(traceEntry)"/></a></span>
 					</jot:loop>
-
+-->
 					<div style="float:right;width:200px;text-align: right">
 						<jot:if eval=" ! loggedUser">
 							<a href="${loginLink}" class="iconLink" onMouseOver="buttonHelp('Login');" onMouseOut="buttonHelp('');"><img src="images/buttons/login.png" width="24" height="24" border="0"/></a>
@@ -67,7 +67,7 @@
 							<a href="setup.do" class="iconLink" onMouseOver="buttonHelp('Global settings');" onMouseOut="buttonHelp('');"><img src="images/buttons/setup.png" width="24" height="24" border="0"/></a>
 						</jot:if>
 						<jot:if eval="loggedUser">
-							<a href="${loginLink}" class="iconLink" onMouseOver="buttonHelp('Logout');" onMouseOut="buttonHelp('');"><img src="images/buttons/logout.png" width="24" height="24" border="0"/></a>
+							<a href="${logoutLink}" class="iconLink" onMouseOver="buttonHelp('Logout');" onMouseOut="buttonHelp('');"><img src="images/buttons/logout.png" width="24" height="24" border="0"/></a>
 						</jot:if>
 						<jot:if eval="canEdit">
 							<a href="${editPageLink}" class="iconLink" onMouseOver="buttonHelp('Edit This Page');" onMouseOut="buttonHelp('');"><img src="images/buttons/edit.png" width="24" height="24" border="0"/></a>
@@ -79,6 +79,7 @@
 						<span id="buttonHelpSpan" class="buttonHelpSpan">&nbsp;</span>
 						&nbsp;
 					</div>
+					<!--
 				</div>
 				-->
 				<div class="page">

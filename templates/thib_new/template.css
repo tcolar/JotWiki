@@ -45,8 +45,10 @@ a:hover{color: #0000DD;border-bottom-color: #0000DD;}
 .comments{background-color: #f0f1c5;margin-top:30px}
 .comment{background-color: transparent; border: 1px solid olive;}
 
-.toc{border: 1px solid black; background-color: #fff999; padding:3px; margin-left:-15px}
+.toc{border: 1px solid black; background-color: #fff999; padding:3px; margin-left:-15px; margin-top:30px}
 .toc_title{font-weight:bold;color:#660000; text-align:center}
 .toc_content{background-color: transparent;}
+
+.buttonHelpSpan{font-size:90%;color:#000000;}
 
 .top_left{float:right;width:20%}
