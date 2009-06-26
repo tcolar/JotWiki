@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <title>Search Results</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href='jotwiki.css'/>
+        <link rel="stylesheet" type="text/css" href='template.css'/>
+        <script type="text/javascript" src="template.js"></script>
+    </head>
+
+    <body>
+        <!-- start header block -->
+	<div class="ruler">
+	    <div id="header_title">
+		<a class="title" href='<jot:var value="homePageLink"/>'><jot:var value="siteTitle"/></a>
+	    </div>
+	    <div class="pagename">
+		<jot:var value="siteMoto"/>
+	    </div>
+	</div>
+
+	<div class="top_left">
+	    <jot:if eval="loggedUser">
+		<a href="edit.do?page=topleft" class="iconLink"><img src="images/buttons/edit_small.png" border="0"/></a>
+	    </jot:if>
+	    <jot:var value="getPageContent('topleft')"/>
+	</div>
+
+
+	<!-- start content block -->
+        <div class="content">
+	    <div class="nb_coil"/>
+	    <div class="page">
+		<!-- search results -->
+		<h1> Search results for "<jot:var value="query"/>"</h1>
+		<b>Found <jot:var value="getNbResults()"/> matches.</b><br/>
+		<jot:if eval=" ! results">
+		    Sorry, no matches found for this query.<br/><br/>
+		</jot:if>
+		<jot:if eval="results">
+		    <b>Pages:</b> <jot:var value="getPageLinks()"/><br/><br/>
+		    <hr/>
+		    <jot:loop over="results" as="result">
+				    [[<jot:var value="getLink(result)"/>]] <jot:var value="getStars(result)"/><br/>
+			<jot:var value="getAbstract(result)"/>
+			<hr/>
+		    </jot:loop>
+		</jot:if>
+		<!-- end wikipage block -->
+	    </div>
+	</div>
+	<div class="sidebar">
+	    <div class="sitenav_item">
+		<div class="pager">
+		    <jot:if eval="searchEnabled">
+			<form id="searchForm" action="search.do" accept-charset="utf-8" class="search" >
+			    <input type="text" name="text" class="searchBox" value="Search form"/>
+			    <!--<input type="submit" value="Search" class="button" title="Search" />-->
+			</form>
+			<a href="javascript:document.getElementById('searchForm').submit();" style="text-decoration:none;border:0px">
+			    <img src="images/blank.png" width="170px" height="70px" border="0" alt=""/>
+			</a>
+		    </jot:if>
+		</div>
+	    </div>
+	</div>
+
+    </body>
+</html>
