@@ -3,7 +3,7 @@ This only contains addons/ovverides to the default jotwiki.css
 */
 
 /* jotwiki ovverides */
-body,html{font-family: "Verdana, Arial, Helvetica, sans-serif;",Arial,sans-serif; font-size: 14px; color:#111111; background-image:url('images/wood4.png');}
+body,html{font-family: "Verdana, Arial, Helvetica, sans-serif;",Arial,sans-serif; font-size: 14px; color:#111111; background-image:url('images/slate.png');}
 .content{clear:both;width: 80%;float:left;color: #111111;background-color: transparent;margin-bottom:20px}
 .nb_coil{background-image:url('images/nb_coil.png');background-repeat:repeat-y;}
 .page{margin-left:50px; padding-right: 30px;padding-top: 20px;padding-bottom: 20px;background-color: #f0f1e5;min-height:600px}
@@ -55,3 +55,7 @@ a:hover{color: #0000DD;border-bottom-color: #0000DD;}
 
 .pager{background-image:url('images/pager.png');width:180px;height:120px;margin-left:15px}
 .searchBox{font-weight:bold;background-color:#149656;text-align:right;padding:2px;width:125px;margin-top:24px;margin-left:22px;border:0px;padding:0px}
+
+.code{margin-top:1px;padding-top:1px;padding-bottom:1px;margin-bottom:1px;background-color:#eeeeff;color:#000055;border-color:#0000ff}
+.code_title{background-color:#ddddff;color:#661111}
+pre{margin-top:1px;padding-top:1px;padding-bottom:1px;margin-bottom:1px}
