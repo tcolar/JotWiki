@@ -40,7 +40,7 @@ public class PostTemplateParser implements JOTViewParserInterface
 			JOTSQLCondition cond = new JOTSQLCondition("page", JOTSQLCondition.IS_EQUAL, pageName);
 			JOTSQLCondition cond2 = new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
 			JOTSQLCondition cond3 = new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, jotId);
-			PageVariable var = (PageVariable) JOTQueryBuilder.selectQuery(PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
+			PageVariable var = (PageVariable) JOTQueryBuilder.selectQuery(null, PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
 
 			if (var == null)
 			{

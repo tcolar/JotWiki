@@ -54,7 +54,7 @@ public class EditPage extends JOTController
         if (pageName != null)
         {
             JOTSQLCondition cond=new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName);
-            if (JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).findOne() == null)
+            if (JOTQueryBuilder.selectQuery(null, PageOptions.class).where(cond).findOne() == null)
             {
                 request.setParameter("pageName", pageName);
                 request.setParameter("pageContent", page);

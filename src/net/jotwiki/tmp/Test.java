@@ -96,7 +96,7 @@ public class Test
     /** use to manually remove a broken/obsolete table entry */
     private static void deleteTableEntry(Class modelClass, long id) throws Exception
     {
-        JOTModel model=JOTQueryBuilder.findByID(modelClass, id);
+        JOTModel model=JOTQueryBuilder.findByID(null, modelClass, id);
         if(model!=null)
         {
             model.delete();

@@ -260,7 +260,7 @@ public class UserForm extends JOTDBItemForm
         try
         {
             // updates existing assignmenet or create new one if none yet.
-            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).where(cond2).findOrCreateOne();
+            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(null, WikiProfileSet.class).where(cond).where(cond2).findOrCreateOne();
             set.setUser(userId);
             set.setNameSpace(ns);
             set.setProfile(profileId);
@@ -277,7 +277,7 @@ public class UserForm extends JOTDBItemForm
         JOTSQLCondition cond2=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
         try
         {
-            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).where(cond2).findOne();
+            WikiProfileSet set = (WikiProfileSet) JOTQueryBuilder.selectQuery(null, WikiProfileSet.class).where(cond).where(cond2).findOne();
             if(set!=null)
                 set.delete();
         } catch (Exception e)
