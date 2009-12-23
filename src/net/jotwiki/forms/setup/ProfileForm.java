@@ -90,7 +90,7 @@ public class ProfileForm extends JOTGeneratedForm
             JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profName);
             try
             {
-                WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
+                WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(null, WikiProfile.class).where(cond).findOne();
                 if (profile != null)
                 {
                     profileId = profile.getId();
@@ -200,7 +200,7 @@ public class ProfileForm extends JOTGeneratedForm
         {
             //update existing one
             JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, request.getParameter(OLD_PROFILE_NAME));
-            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
+            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(null, WikiProfile.class).where(cond).findOne();
             if (profile != null)
             {
                 if (isRemovable(OLD_PROFILE_NAME))
@@ -219,7 +219,7 @@ public class ProfileForm extends JOTGeneratedForm
             // deal with the permissions
             // remove existing entries.
             JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, new Long(id));
-            Vector perms = JOTQueryBuilder.selectQuery(WikiPermission.class).where(cond).find().getAllResults();
+            Vector perms = JOTQueryBuilder.selectQuery(null, WikiPermission.class).where(cond).find().getAllResults();
             for (int i = 0; i != perms.size(); i++)
             {
                 WikiPermission perm = (WikiPermission) perms.get(i);
@@ -245,7 +245,7 @@ public class ProfileForm extends JOTGeneratedForm
             // deal with subprofiles
             // remove current ones
             JOTSQLCondition cond2=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, new Long(id));
-            Vector subs = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond2).find().getAllResults();
+            Vector subs = JOTQueryBuilder.selectQuery(null, WikiSubProfiles.class).where(cond2).find().getAllResults();
             for (int i = 0; i != subs.size(); i++)
             {
                 WikiSubProfiles sub = (WikiSubProfiles) subs.get(i);
@@ -364,7 +364,7 @@ public class ProfileForm extends JOTGeneratedForm
         try
         {
             JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profName);
-            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
+            WikiProfile profile = (WikiProfile) JOTQueryBuilder.selectQuery(null, WikiProfile.class).where(cond).findOne();
             if (profile != null)
             {
                 result = profile.isRemovable();

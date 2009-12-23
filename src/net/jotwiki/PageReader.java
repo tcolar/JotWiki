@@ -111,7 +111,7 @@ public class PageReader
     {
         JOTSQLCondition cond=new JOTSQLCondition(PageOptionsForm.PAGE_NAME, JOTSQLCondition.IS_EQUAL, pageName);
         JOTSQLCondition cond2=new JOTSQLCondition(PageOptionsForm.NAMESPACE, JOTSQLCondition.IS_EQUAL, ns);
-        PageOptions options = (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOne();
+        PageOptions options = (PageOptions) JOTQueryBuilder.selectQuery(null, PageOptions.class).where(cond).where(cond2).findOne();
         if(options==null)
         {
             options=new PageOptions();
