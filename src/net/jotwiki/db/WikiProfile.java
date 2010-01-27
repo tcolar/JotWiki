@@ -55,7 +55,7 @@ public class WikiProfile extends JOTAuthProfile
         prof.delete();
         // delete this profile subprofile entries.
         JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, profId);
-        Vector entries = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond).find().getAllResults();
+        Vector entries = JOTQueryBuilder.selectQuery(null, WikiSubProfiles.class).where(cond).find().getAllResults();
         for (int i = 0; i != entries.size(); i++)
         {
             WikiSubProfiles prfEntry = (WikiSubProfiles) entries.get(i);
@@ -63,7 +63,7 @@ public class WikiProfile extends JOTAuthProfile
         }
         // delete entries from profiles that have this as a subprofile.
         JOTSQLCondition cond2=new JOTSQLCondition("subProfile", JOTSQLCondition.IS_EQUAL, profId);
-        Vector entries2 = JOTQueryBuilder.selectQuery(WikiSubProfiles.class).where(cond2).find().getAllResults();
+        Vector entries2 = JOTQueryBuilder.selectQuery(null, WikiSubProfiles.class).where(cond2).find().getAllResults();
         for (int i = 0; i != entries2.size(); i++)
         {
             WikiSubProfiles prfEntry = (WikiSubProfiles) entries2.get(i);
@@ -82,13 +82,13 @@ public class WikiProfile extends JOTAuthProfile
         WikiProfile prof = (WikiProfile) getByName(profile);
         Long profileId = new Long(prof.getId());
         JOTSQLCondition cond=new JOTSQLCondition("profile", JOTSQLCondition.IS_EQUAL, profileId);
-        Vector entries = JOTQueryBuilder.selectQuery(WikiProfileSet.class).where(cond).find().getAllResults();
+        Vector entries = JOTQueryBuilder.selectQuery(null, WikiProfileSet.class).where(cond).find().getAllResults();
         String results = "";
         for (int i = 0; i != entries.size(); i++)
         {
             WikiProfileSet set = (WikiProfileSet) entries.get(i);
             long user = set.getUser();
-            WikiUser usr = (WikiUser) JOTQueryBuilder.findByID(WikiUser.class, user);
+            WikiUser usr = (WikiUser) JOTQueryBuilder.findByID(null, WikiUser.class, user);
             results += usr.getLogin() + ", ";
         }
         return results;
@@ -105,7 +105,7 @@ public class WikiProfile extends JOTAuthProfile
     public static WikiProfile getByName(String profileName) throws Exception
     {
         JOTSQLCondition cond=new JOTSQLCondition("name", JOTSQLCondition.IS_EQUAL, profileName);
-        return (WikiProfile) JOTQueryBuilder.selectQuery(WikiProfile.class).where(cond).findOne();
+        return (WikiProfile) JOTQueryBuilder.selectQuery(null, WikiProfile.class).where(cond).findOne();
     }
     
     public static boolean findPermission(WikiProfile profile, String permission) throws Exception

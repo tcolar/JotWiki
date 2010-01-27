@@ -139,7 +139,7 @@ public class EditForm extends JOTForm
     String pageFolder = WikiPreferences.getInstance().getPagesFolder(ns);
     File file = new File(pageFolder, pageName + ".txt");
     FileOutputStream fos = new FileOutputStream(file);
-    fos.write(text.getBytes());
+    fos.write(text.getBytes("UTF-8"));
     fos.close();
   }
 

@@ -39,7 +39,8 @@
 			<arg value="src/net/jotwiki/Version.java"/>
 		</java>
 	</target>
-	
+
+	<!-- Need to run this before "run", otherwise migth have class mismatch -->
 	<target name="war" depends="copyjar, tag, compile">
 		<!-- creating web module archive -->
 		<delete file="jotwiki.war"/>

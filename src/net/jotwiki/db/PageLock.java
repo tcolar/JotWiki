@@ -14,7 +14,6 @@ import net.jot.persistance.JOTModel;
 import net.jot.persistance.JOTModelMapping;
 import net.jot.persistance.JOTSQLCondition;
 import net.jot.persistance.builders.JOTQueryBuilder;
-import net.jot.persistance.query.JOTQueryManager;
 
 /**
  * Edition lock for a page DB object.
@@ -54,11 +53,11 @@ public class PageLock extends JOTModel
     PageLock lock = null;
     if (createIfMising)
     {
-      lock = (PageLock) JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).findOrCreateOne();
+      lock = (PageLock) JOTQueryBuilder.selectQuery(null, PageLock.class).where(cond).where(cond2).findOrCreateOne();
     }
     else
     {
-      lock = (PageLock) JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).findOne();
+      lock = (PageLock) JOTQueryBuilder.selectQuery(null, PageLock.class).where(cond).where(cond2).findOne();
     }
     return lock;
   }
@@ -114,7 +113,7 @@ public class PageLock extends JOTModel
         JOTSQLCondition cond2=new JOTSQLCondition("lockTime", JOTSQLCondition.IS_LOWER, cuttofTime);
         try
         {
-            Vector locks =  JOTQueryBuilder.selectQuery(PageLock.class).where(cond).where(cond2).find().getAllResults();
+            Vector locks =  JOTQueryBuilder.selectQuery(null, PageLock.class).where(cond).where(cond2).find().getAllResults();
             for(int i=0;i!=locks.size();i++)
             {
                 PageLock lock=(PageLock)locks.get(i);

@@ -138,7 +138,7 @@ public class PageOptions extends JOTModel
     {
         JOTSQLCondition cond=new JOTSQLCondition("nameSpace", JOTSQLCondition.IS_EQUAL, ns);
         JOTSQLCondition cond2=new JOTSQLCondition("pageName", JOTSQLCondition.IS_EQUAL, page);
-        PageOptions options =  (PageOptions) JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOrCreateOne();
+        PageOptions options =  (PageOptions) JOTQueryBuilder.selectQuery(null, PageOptions.class).where(cond).where(cond2).findOrCreateOne();
         return options;
     }
 

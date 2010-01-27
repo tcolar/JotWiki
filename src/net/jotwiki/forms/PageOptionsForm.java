@@ -188,7 +188,7 @@ public class PageOptionsForm extends JOTDBItemForm
 			String chk = request.getParameter(WIKI_VAR_CHECKBOX_ID + var.getName());
 			String val = request.getParameter(WIKI_VAR_ID + var.getName());
 
-			PageVariable pageVar = (PageVariable) JOTQueryBuilder.selectQuery(PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
+			PageVariable pageVar = (PageVariable) JOTQueryBuilder.selectQuery(null, PageVariable.class).where(cond).where(cond2).where(cond3).findOne();
 			if (chk != null && (chk.toLowerCase().equals("on") || chk.toLowerCase().equals("selected")))
 			{
 				if (pageVar == null)
@@ -222,7 +222,7 @@ public class PageOptionsForm extends JOTDBItemForm
 		String ns = request.getParameter(Constants.NAMESPACE_SHORT);
 		JOTSQLCondition cond = new JOTSQLCondition(PAGE_NAME, JOTSQLCondition.IS_EQUAL, page);
 		JOTSQLCondition cond2 = new JOTSQLCondition(NAMESPACE, JOTSQLCondition.IS_EQUAL, ns);
-		model = JOTQueryBuilder.selectQuery(PageOptions.class).where(cond).where(cond2).findOrCreateOne();
+		model = JOTQueryBuilder.selectQuery(null, PageOptions.class).where(cond).where(cond2).findOrCreateOne();
 		layoutForm(request);
 	}
 
@@ -276,7 +276,7 @@ public class PageOptionsForm extends JOTDBItemForm
 				boolean defaulted = true;
 				try
 				{
-					PageVariable var = (PageVariable) JOTQueryBuilder.selectQuery(PageVariable.class).where(cond1).where(cond2).where(cond3).findOne();
+					PageVariable var = (PageVariable) JOTQueryBuilder.selectQuery(null, PageVariable.class).where(cond1).where(cond2).where(cond3).findOne();
 					if (var != null)
 					{
 						value = var.getValue();

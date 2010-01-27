@@ -59,7 +59,7 @@
                     <br><br>See the <a href="http://www.jotwiki.net" target="_blank">jotwiki site</a> for more informations on doing this.
                 </div>
                 <a href="editNamespace.do?new=1">Create new</a>
-                <form action="editNamespace.do" method="POST">
+                <form action="editNamespace.do" method="POST" accept-charset="UTF-8">
                     <select name="ns">
                         <jot:loop over="namespaces" as="ns">
                             <option value="<jot:var value="ns"/>"><jot:var value="ns"/>
@@ -76,7 +76,7 @@
                     Profiles define a set of permissions which can then be assigned to a user.<br>
                 </div>
                 <a href="editProfile.do?new=1">Create new</a>
-                <form action="editProfile.do" id="delete_profile" method="POST">
+                <form action="editProfile.do" id="delete_profile" method="POST"  accept-charset="UTF-8">
                     <select name="profile">
                         <jot:loop over="profiles" as="profile">
                             <option value="<jot:var value="profile"/>"><jot:var value="profile"/>
@@ -95,7 +95,7 @@
                     Create/Edit users.<br>
                 </div>
                 <a href="editUser.do?new=1">Create new</a>
-                <form action="editUser.do" id="delete_user" method="POST">
+                <form action="editUser.do" id="delete_user" method="POST"  accept-charset="UTF-8">
                     <select name="user">
                         <jot:loop over="users" as="user">
                             <option value="<jot:var value="user"/>"><jot:var value="user"/>
